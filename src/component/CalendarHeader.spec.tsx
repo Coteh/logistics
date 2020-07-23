@@ -1,16 +1,16 @@
 import React from "react";
 import "jest"
 import { render } from "@testing-library/react";
-import CalendarColumn from "./CalendarColumn";
+import CalendarHeader from "./CalendarHeader";
 
 describe('CalendarColumn', () => {
     it("should render without crash", () => {
-        render(<CalendarColumn cellWidth={60} cellHeight={30}/>);
+        render(<CalendarHeader cellWidth={60} cellHeight={30}/>);
     });
-    it('should render rows', () => {
+    it('should render a header', () => {
         throw new Error("Not implemented");
     });
-    it('should render row text', () => {
+    it('should render header text', () => {
         throw new Error("Not implemented");
     });
 });

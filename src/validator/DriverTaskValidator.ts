@@ -4,6 +4,8 @@ import { DriverTaskRepository } from "../repository/DriverTaskRepository";
 interface DriverTaskArgs {
     start: number;
     end: number;
+    day: number;
+    week: number;
 }
 
 export default class DriverTaskValidator {

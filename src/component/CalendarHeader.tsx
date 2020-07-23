@@ -3,11 +3,11 @@ import React from 'react';
 interface IProps {
     cellWidth: number;
     cellHeight: number;
-    rows?: string[];
+    header?: string;
 }
 
-export default function CalendarColumn(props: IProps) {
-    const {cellWidth, cellHeight, rows} = props;
+export default function CalendarHeader(props: IProps) {
+    const {cellWidth, cellHeight, header} = props;
 
     const cellStyle = {
         border: "0.5px solid black",
@@ -20,11 +20,9 @@ export default function CalendarColumn(props: IProps) {
         <div style={{
             position: "relative"
         }}>
-            {rows?.map((row, i) => (
-                <div style={cellStyle} key={i}>
-                    {row}
-                </div>
-            ))}
+            <div style={cellStyle}>
+                {header}
+            </div>
         </div>
     );
 }

@@ -15,9 +15,14 @@ const driverTaskService: DriverTaskService = new DriverTaskService(
   new DriverTaskRepository()
 );
 
+function getClampedWeek(week: number) {
+  return ((((week - 1) % 52) + 52) % 52) + 1;
+}
+
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(new User(1, UserType.DISPATCHER));
   const [selectedUserID, setSelectedUserID] = useState(1);
+  const [selectedWeek, setSelectedWeek] = useState(1);
   const [tasks, setTasks] = useState(new Array());
 
   useEffect(() => {
@@ -25,15 +30,16 @@ function App() {
       start: 14,
       end: 16,
       type: DriverTaskType.DELIVER,
-      day: 0,
+      day: 1,
+      week: 1,
       userID: 1,
       location: "Toronto",
     }, loggedInUser);
   }, []);
 
   useEffect(() => {
-    setTasks(driverTaskService.getTasksByUserID(selectedUserID, loggedInUser));
-  }, [selectedUserID, loggedInUser]);
+    setTasks(driverTaskService.getWeeklyUserTasks(selectedUserID, selectedWeek, loggedInUser));
+  }, [selectedUserID, selectedWeek, loggedInUser]);
 
   return (
     <div className="App">
@@ -63,7 +69,9 @@ function App() {
             </select>
           </div>
           <div>
-            <span>{"<- Week 2 ->"}</span>
+            <button onClick={() => setSelectedWeek(getClampedWeek(selectedWeek - 1))}>{"<-"}</button>
+            <span>{` Week ${selectedWeek} `}</span>
+            <button onClick={() => setSelectedWeek(getClampedWeek(selectedWeek + 1))}>{"->"}</button>
           </div>
         </div>
         <Calendar tasks={tasks}/>

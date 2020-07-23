@@ -11,6 +11,6 @@ export default class DriverTaskFactory implements ModelFactory<DriverTask, Drive
     }
 
     public create(args: DriverTaskInput): DriverTask {
-        return new DriverTask(this.idGen.genID(), args.type, args.start, args.end, args.day, args.userID, args.location);
+        return new DriverTask(this.idGen.genID(), args.type, args.start, args.end, args.day, args.week, args.userID, args.location);
     }
 }

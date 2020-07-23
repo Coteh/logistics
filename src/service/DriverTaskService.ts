@@ -48,10 +48,20 @@ export default class DriverTaskService {
         this.driverTaskRepo.delete(id);
     }
 
-    public getTasksByUserID(userID: number, user: User): DriverTask[] {
+    public getWeeklyUserTasks(userID: number, week: number, user: User): DriverTask[] {
         // TODO ensure user has role to access selected tasks
 
-        return this.driverTaskRepo.getByUserID(userID);
+        return this.driverTaskRepo.getWeeklyTasksByUserID({
+            userID,
+            startWeek: week,
+            endWeek: week,
+        });
+    }
+
+    public getDayIntervalUserTasks(userID: number, dayInterval: number, user: User): DriverTask[] {
+        // TODO ensure user has role to access selected tasks
+
+        throw new Error("Not implemented");
     }
 
 }
