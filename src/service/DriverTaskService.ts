@@ -72,13 +72,42 @@ export default class DriverTaskService {
 
     public updateTask(id: number, args: DriverTaskInput, user: User): Promise<DriverTask> {
         return new Promise((resolve, reject) => {
-            // TODO ensure user has role to update task
-            // TODO ensure task is valid (ie. does not conflict with any other task)
-    
+            // Ensure user has role to add task
+            if (user.type !== UserType.DISPATCHER) {
+                reject({
+                    message: "User does not have permission to add a task",
+                    type: ServiceErrorType.INSUFFICIENT_PERMISSIONS,
+                });
+                return;
+            }
+            // Ensure task is valid (ie. does not conflict with any other task)
+            let result: DriverTaskValidationResult = this.driverTaskValidator.validateTaskEntry({
+                start: args.start,
+                end: args.end,
+                day: args.day,
+                week: args.week,
+            });
+            if (result.invalid) {
+                reject({
+                    message: "Updated task has invalid start and/or end time",
+                    type: ServiceErrorType.INVALID_TIME_SLOT,
+                });
+                return;
+            }
+            if (result.conflict) {
+                reject({
+                    message: "Updated task conflicts with one or more tasks",
+                    type: ServiceErrorType.TASK_CONFLICT,
+                    conflictingTasks: result.conflictingTasks,
+                });
+                return;
+            }
             let driverTask = this.driverTaskRepo.get(id);
             driverTask.type = args.type;
             driverTask.start = args.start;
             driverTask.end = args.end;
+            driverTask.day = args.day;
+            driverTask.week = args.week;
             driverTask.userID = args.userID;
             driverTask.location = args.location;
 
