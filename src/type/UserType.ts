@@ -1,5 +1,5 @@
 export enum UserType {
-    NONE,
-    DISPATCHER,
-    DRIVER,
+  NONE,
+  DISPATCHER,
+  DRIVER,
 }

@@ -10,20 +10,27 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "coteh-react-scripts": "3.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
     "@types/sinon": "^9.0.4",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
     "sinon": "^9.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test-ci": "CI=true yarn test --coverage --coverageProvider=v8",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext js,ts,tsx src",
+    "format": "prettier --config ./.prettierrc --write ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,6 +45,17 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,tsx}": [
+      "eslint",
+      "pretty-quick --staged"
     ]
   }
 }

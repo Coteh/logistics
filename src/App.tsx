@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Calendar from "./component/Calendar";
+import Calendar from './component/Calendar';
 import { DriverTaskType } from './type/DriverTaskType';
 import DriverTaskService from './service/DriverTaskService';
 import DriverTaskFactory from './factory/DriverTaskFactory';
@@ -20,7 +20,7 @@ const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
   new DriverTaskFactory(new IdGenerator()),
   driverTaskRepo,
-  new DriverTaskValidator(driverTaskRepo)
+  new DriverTaskValidator(driverTaskRepo),
 );
 
 function getClampedWeek(week: number) {
@@ -28,7 +28,9 @@ function getClampedWeek(week: number) {
 }
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState(new User(1, UserType.DISPATCHER));
+  const [loggedInUser, setLoggedInUser] = useState(
+    new User(1, UserType.DISPATCHER),
+  );
   const [selectedUserID, setSelectedUserID] = useState(1);
   const [selectedDriverTaskID, setSelectedDriverTaskID] = useState(1);
   const [selectedWeek, setSelectedWeek] = useState(1);
@@ -36,19 +38,23 @@ function App() {
 
   // TODO remove
   useEffect(() => {
-    driverTaskService.addTask({
-      start: 14,
-      end: 16,
-      type: DriverTaskType.DELIVER,
-      day: 1,
-      week: 1,
-      userID: 1,
-      location: "Toronto",
-    }, loggedInUser);
+    driverTaskService.addTask(
+      {
+        start: 14,
+        end: 16,
+        type: DriverTaskType.DELIVER,
+        day: 1,
+        week: 1,
+        userID: 1,
+        location: 'Toronto',
+      },
+      loggedInUser,
+    );
   }, []);
 
   useEffect(() => {
-    driverTaskService.getWeeklyUserTasks(selectedUserID, selectedWeek, loggedInUser)
+    driverTaskService
+      .getWeeklyUserTasks(selectedUserID, selectedWeek, loggedInUser)
       .then((res: DriverTask[]) => {
         setTasks(res);
       })
@@ -58,9 +64,10 @@ function App() {
   }, [selectedUserID, selectedWeek, loggedInUser]);
 
   function addNewTask(args: DriverTaskInput) {
-    driverTaskService.addTask(args, loggedInUser)
+    driverTaskService
+      .addTask(args, loggedInUser)
       .then((task) => {
-        console.log("Adding successful");
+        console.log('Adding successful');
         // setTasks(tasks.concat(task));
       })
       .catch((err) => {
@@ -69,9 +76,10 @@ function App() {
   }
 
   function updateTask(args: DriverTaskInput) {
-    driverTaskService.updateTask(selectedDriverTaskID, args, loggedInUser)
+    driverTaskService
+      .updateTask(selectedDriverTaskID, args, loggedInUser)
       .then((res) => {
-        console.log("Updating successful");
+        console.log('Updating successful');
       })
       .catch((err) => {
         console.log(err.message);
@@ -79,9 +87,10 @@ function App() {
   }
 
   function deleteTask(driverTaskId: number) {
-    driverTaskService.deleteTask(driverTaskId, loggedInUser)
+    driverTaskService
+      .deleteTask(driverTaskId, loggedInUser)
       .then((res) => {
-        console.log("Deleting successful");
+        console.log('Deleting successful');
       })
       .catch((err) => {
         console.log(err.message);
@@ -93,19 +102,19 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <div style={{
-        display: "flex",
-      }}>
-        <button>
-          Create
-        </button>
-        <button>
-          Download
-        </button>
+      <div
+        style={{
+          display: 'flex',
+        }}
+      >
+        <button>Create</button>
+        <button>Download</button>
       </div>
-      <div style={{
-          display: "flex",
-        }}>
+      <div
+        style={{
+          display: 'flex',
+        }}
+      >
         <div>
           <span>Driver</span>
           <select>
@@ -116,17 +125,27 @@ function App() {
           </select>
         </div>
         <div>
-          <button onClick={() => setSelectedWeek(getClampedWeek(selectedWeek - 1))}>{"<-"}</button>
+          <button
+            onClick={() => setSelectedWeek(getClampedWeek(selectedWeek - 1))}
+          >
+            {'<-'}
+          </button>
           <span>{` Week ${selectedWeek} `}</span>
-          <button onClick={() => setSelectedWeek(getClampedWeek(selectedWeek + 1))}>{"->"}</button>
+          <button
+            onClick={() => setSelectedWeek(getClampedWeek(selectedWeek + 1))}
+          >
+            {'->'}
+          </button>
         </div>
       </div>
-      <Calendar tasks={tasks}/>
-      <div style={{
-        position: "absolute",
-        margin: "0 auto",
-      }}>
-        <Overlay container={<AddDriverTask addNewTaskFunc={addNewTask}/>}/>
+      <Calendar tasks={tasks} />
+      <div
+        style={{
+          position: 'absolute',
+          margin: '0 auto',
+        }}
+      >
+        <Overlay container={<AddDriverTask addNewTaskFunc={addNewTask} />} />
       </div>
     </div>
   );

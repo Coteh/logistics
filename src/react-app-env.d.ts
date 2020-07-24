@@ -1,1 +1,1 @@
-/// <reference types="react-scripts" />
+/// <reference types="coteh-react-scripts" />

@@ -1,20 +1,24 @@
-import User from "../model/User";
-import DriverTask from "../model/DriverTask";
-import { CSVCreator } from "../csv/CSVCreator";
-import FileDownloader from "../file/FileDownloader";
+import User from '../model/User';
+import DriverTask from '../model/DriverTask';
+import { CSVCreator } from '../csv/CSVCreator';
+import FileDownloader from '../file/FileDownloader';
 
 export default class CSVExporterService {
-    private csvCreator: CSVCreator;
+  private csvCreator: CSVCreator;
 
-    constructor(csvCreator: CSVCreator) {
-        this.csvCreator = csvCreator;
-    }
+  constructor(csvCreator: CSVCreator) {
+    this.csvCreator = csvCreator;
+  }
 
-    public exportToCSV(user: User, tasks: DriverTask[], dayInterval: number): Promise<any> {
-        return new Promise((resolve, reject) => {
-            reject({
-                message: "Not implemented",
-            });
-        });
-    }
+  public exportToCSV(
+    user: User,
+    tasks: DriverTask[],
+    dayInterval: number,
+  ): Promise<any> {
+    return new Promise((resolve, reject) => {
+      reject({
+        message: 'Not implemented',
+      });
+    });
+  }
 }
