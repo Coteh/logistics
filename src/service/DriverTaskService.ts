@@ -22,46 +22,63 @@ export default class DriverTaskService {
         this.driverTaskRepo = driverTaskRepo;
     }
 
-    public addTask(args: DriverTaskInput, user: User) {
-        // TODO ensure user has role to add task
-        // TODO ensure task is valid (ie. does not conflict with any other task)
-        let driverTask = this.driverTaskFactory.create(args);
-        this.driverTaskRepo.add(driverTask.id, driverTask);
-    }
-
-    public updateTask(id: number, args: DriverTaskInput, user: User) {
-        // TODO ensure user has role to update task
-        // TODO ensure task is valid (ie. does not conflict with any other task)
-
-        let driverTask = this.driverTaskRepo.get(id);
-        driverTask.type = args.type;
-        driverTask.start = args.start;
-        driverTask.end = args.end;
-        driverTask.userID = args.userID;
-        driverTask.location = args.location;
-    }
-
-    public deleteTask(id: number, user: User) {
-        // TODO ensure user has role to delete task
-        // TODO ensure task is valid (ie. does not conflict with any other task)
-
-        this.driverTaskRepo.delete(id);
-    }
-
-    public getWeeklyUserTasks(userID: number, week: number, user: User): DriverTask[] {
-        // TODO ensure user has role to access selected tasks
-
-        return this.driverTaskRepo.getWeeklyTasksByUserID({
-            userID,
-            startWeek: week,
-            endWeek: week,
+    public addTask(args: DriverTaskInput, user: User): Promise<DriverTask> {
+        return new Promise((resolve, reject) => {
+            // TODO ensure user has role to add task
+            // TODO ensure task is valid (ie. does not conflict with any other task)
+            let driverTask = this.driverTaskFactory.create(args);
+            this.driverTaskRepo.add(driverTask.id, driverTask);
+            resolve(driverTask);
         });
     }
 
-    public getDayIntervalUserTasks(userID: number, dayInterval: number, user: User): DriverTask[] {
-        // TODO ensure user has role to access selected tasks
+    public updateTask(id: number, args: DriverTaskInput, user: User): Promise<DriverTask> {
+        return new Promise((resolve, reject) => {
+            // TODO ensure user has role to update task
+            // TODO ensure task is valid (ie. does not conflict with any other task)
+    
+            let driverTask = this.driverTaskRepo.get(id);
+            driverTask.type = args.type;
+            driverTask.start = args.start;
+            driverTask.end = args.end;
+            driverTask.userID = args.userID;
+            driverTask.location = args.location;
 
-        throw new Error("Not implemented");
+            resolve(driverTask);
+        });
+    }
+
+    public deleteTask(id: number, user: User): Promise<void> {
+        return new Promise((resolve, reject) => {
+            // TODO ensure user has role to delete task
+            // TODO ensure task is valid (ie. does not conflict with any other task)
+    
+            this.driverTaskRepo.delete(id);
+
+            resolve();
+        });
+    }
+
+    public getWeeklyUserTasks(userID: number, week: number, user: User): Promise<DriverTask[]> {
+        return new Promise((resolve, reject) => {
+            // TODO ensure user has role to access selected tasks
+
+            resolve(this.driverTaskRepo.getWeeklyTasksByUserID({
+                userID,
+                startWeek: week,
+                endWeek: week,
+            }));
+        });
+    }
+
+    public getDayIntervalUserTasks(userID: number, dayInterval: number, user: User): Promise<DriverTask[]> {
+        return new Promise((resolve, reject) => {
+            // TODO ensure user has role to access selected tasks
+
+            reject({
+                message: 'Not implemented',
+            });
+        });
     }
 
 }

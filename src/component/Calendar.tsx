@@ -22,9 +22,10 @@ export default function Calendar(props: IProps) {
     return (
         <>
             <div style={{
-                width: "100%",
+                maxWidth: "100vw",
                 padding: padding + "px",
                 display: "flex",
+                border: "1px solid black",
             }}>
                 <CalendarHeader cellWidth={cellWidth}
                     cellHeight={cellHeight}/>
@@ -41,7 +42,7 @@ export default function Calendar(props: IProps) {
                 ))}
             </div>
             <div style={{
-                width: "100%",
+                maxWidth: "100vw",
                 padding: padding + "px",
                 display: "flex",
                 height: "400px",
@@ -70,7 +71,7 @@ export default function Calendar(props: IProps) {
                             right: 0
                         }}>
                             {tasks.map((task) => {
-                                if (task.day !== i) {
+                                if (task.day !== (i + 1)) {
                                     return <></>;
                                 }
 
