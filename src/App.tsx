@@ -14,10 +14,13 @@ import AddDriverTask from './section/AddDriverTask';
 import { DriverTaskInput } from './input/DriverTaskInput';
 import DriverTask from './model/DriverTask';
 import ServiceError from './service/ServiceError';
+import DriverTaskValidator from './validator/DriverTaskValidator';
 
+const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
   new DriverTaskFactory(new IdGenerator()),
-  new DriverTaskRepository()
+  driverTaskRepo,
+  new DriverTaskValidator(driverTaskRepo)
 );
 
 function getClampedWeek(week: number) {

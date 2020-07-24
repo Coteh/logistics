@@ -13,4 +13,10 @@ describe('DriverTaskValidator', () => {
     it('invalidates a driver task when two tasks conflict', () => {
         throw new Error("Not implemented");
     });
+    it('invalidates a driver task if start and end time are the same', () => {
+        throw new Error("Not implemented");
+    });
+    it('invalidates a driver task if end time is before start time', () => {
+        throw new Error("Not implemented");
+    });
 });

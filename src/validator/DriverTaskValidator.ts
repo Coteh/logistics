@@ -8,6 +8,12 @@ interface DriverTaskArgs {
     week: number;
 }
 
+export interface DriverTaskValidationResult {
+    conflict: boolean;
+    invalid: boolean;
+    conflictingTasks?: DriverTask[];
+}
+
 export default class DriverTaskValidator {
     private driverTaskRepo: DriverTaskRepository;
 
@@ -15,7 +21,7 @@ export default class DriverTaskValidator {
         this.driverTaskRepo = driverTaskRepo;
     }
 
-    public validateTaskEntry(args: DriverTaskArgs): boolean {
+    public validateTaskEntry(args: DriverTaskArgs): DriverTaskValidationResult {
         throw new Error("Not implemented");
     }
 }
