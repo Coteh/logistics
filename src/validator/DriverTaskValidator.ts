@@ -30,8 +30,7 @@ export default class DriverTaskValidator {
     });
     let conflictingTasks: DriverTask[] = userTasks.filter((task) => {
       return (
-        (args.start >= task.start && args.end <= task.end) ||
-        (task.start >= args.start && task.end <= args.end)
+        args.day === task.day && args.start < task.end && task.start < args.end
       );
     });
 

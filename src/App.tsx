@@ -1,4 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  Context,
+  createContext,
+} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Calendar from './component/Calendar';
@@ -15,6 +21,7 @@ import { DriverTaskInput } from './input/DriverTaskInput';
 import DriverTask from './model/DriverTask';
 import ServiceError from './service/ServiceError';
 import DriverTaskValidator from './validator/DriverTaskValidator';
+import Notification from './component/Notification';
 
 const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
@@ -27,14 +34,21 @@ function getClampedWeek(week: number) {
   return ((((week - 1) % 52) + 52) % 52) + 1;
 }
 
+type AppContextType = {
+  displayNotification: Function;
+};
+
+export const AppContext: Context<AppContextType> = createContext(
+  {} as AppContextType,
+);
+
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState(
-    new User(1, UserType.DISPATCHER),
-  );
+  const [loggedInUser] = useState(new User(1, UserType.DISPATCHER));
   const [selectedUserID, setSelectedUserID] = useState(1);
   const [selectedDriverTaskID, setSelectedDriverTaskID] = useState(1);
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [tasks, setTasks] = useState(new Array());
+  const [notifications, setNotifications] = useState(new Array());
 
   // TODO remove
   useEffect(() => {
@@ -63,15 +77,28 @@ function App() {
       });
   }, [selectedUserID, selectedWeek, loggedInUser]);
 
+  function displayNotification(message: string) {
+    setNotifications((notifications) => [...notifications, message]);
+    const timeout = setTimeout(() => {
+      setNotifications((notifications) => {
+        let offset = notifications.indexOf(message);
+        return notifications
+          .slice(0, offset)
+          .concat(notifications.slice(offset + 1));
+      });
+      clearTimeout(timeout);
+    }, 2000);
+  }
+
   function addNewTask(args: DriverTaskInput) {
     driverTaskService
       .addTask(args, loggedInUser)
       .then((task) => {
-        console.log('Adding successful');
-        // setTasks(tasks.concat(task));
+        displayNotification('Adding successful');
+        setTasks(tasks.concat(task));
       })
       .catch((err) => {
-        console.log(err.message);
+        displayNotification(err);
       });
   }
 
@@ -145,7 +172,12 @@ function App() {
           margin: '0 auto',
         }}
       >
-        <Overlay container={<AddDriverTask addNewTaskFunc={addNewTask} />} />
+        {notifications.map((notification, i) => (
+          <Notification key={`notif_${i}`} message={notification} />
+        ))}
+        <AppContext.Provider value={{ displayNotification }}>
+          <Overlay container={<AddDriverTask addNewTaskFunc={addNewTask} />} />
+        </AppContext.Provider>
       </div>
     </div>
   );

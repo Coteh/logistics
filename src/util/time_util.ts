@@ -1,4 +1,5 @@
 export function hoursToTimeString(hour: number) {
+  hour -= 1;
   let label: string = 'AM';
   if (hour >= 12) {
     if (hour > 12) {
@@ -13,6 +14,6 @@ export function hoursToTimeString(hour: number) {
 
 export function createHoursArr(): number[] {
   return new Array(24).fill(0).map((_, index) => {
-    return index;
+    return index + 1;
   });
 }

@@ -12,6 +12,7 @@ interface IProps {
 export default function Calendar(props: IProps) {
   const hoursArr: number[] = createHoursArr();
   const daysArr: string[] = [
+    'Sunday',
     'Monday',
     'Tuesday',
     'Wednesday',
@@ -39,7 +40,7 @@ export default function Calendar(props: IProps) {
         <CalendarHeader cellWidth={cellWidth} cellHeight={cellHeight} />
         {daysArr.map((v, i) => (
           <div
-            key={i}
+            key={`header_${i}`}
             style={{
               position: 'relative',
             }}
@@ -88,32 +89,31 @@ export default function Calendar(props: IProps) {
                 right: 0,
               }}
             >
-              {tasks.map((task) => {
-                if (task.day !== i + 1) {
-                  return <></>;
-                }
-
-                return (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      backgroundColor: '#3174ad',
-                      borderRadius: '8px',
-                      top: cellHeight * task.start + padding + 'px',
-                      height: (task.end - task.start) * cellHeight + 'px',
-                      width: '100%',
-                    }}
-                  >
-                    <span
+              {tasks
+                .filter((task) => task.day === i + 1)
+                .map((task) => {
+                  return (
+                    <div
+                      key={`task_${task.id}`}
                       style={{
-                        color: 'white',
+                        position: 'absolute',
+                        backgroundColor: '#3174ad',
+                        borderRadius: '8px',
+                        top: cellHeight * (task.start - 1) + 'px',
+                        height: (task.end - task.start) * cellHeight + 'px',
+                        width: '100%',
                       }}
                     >
-                      {driverTaskString(task.type)}
-                    </span>
-                  </div>
-                );
-              })}
+                      <span
+                        style={{
+                          color: 'white',
+                        }}
+                      >
+                        {driverTaskString(task.type)}
+                      </span>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         ))}
