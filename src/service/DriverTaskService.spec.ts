@@ -15,19 +15,18 @@ import ServiceError, { ServiceErrorType } from './ServiceError';
 
 describe('DriverTaskService', () => {
   let mockFactory: StubbedClass<DriverTaskFactory>;
-  let mockRepo: StubbedClass<DriverTaskRepository>;
+  let repo: DriverTaskRepository;
   let mockValidator: StubbedClass<DriverTaskValidator>;
   let service: DriverTaskService;
 
   beforeEach(() => {
     mockFactory = createSinonStubInstance(DriverTaskFactory);
-    mockRepo = createSinonStubInstance(DriverTaskRepository);
+    repo = new DriverTaskRepository();
     mockValidator = createSinonStubInstance(DriverTaskValidator);
-    service = new DriverTaskService(mockFactory, mockRepo, mockValidator);
+    service = new DriverTaskService(mockFactory, repo, mockValidator);
   });
 
   describe('addTask', () => {
-    // TODO add fake repo rather than mock repo to ensure entries are added
     it('successfully adds a task', () => {
       mockFactory.create.returns({
         id: 1,
@@ -44,6 +43,11 @@ describe('DriverTaskService', () => {
         invalid: false,
       });
 
+      // Precondition: Assert that no task of ID 1 exists yet
+      expect(() => {
+        repo.get(1);
+      }).toThrow();
+
       return service
         .addTask(
           {
@@ -59,7 +63,7 @@ describe('DriverTaskService', () => {
         )
         .then(() => {
           expect(mockFactory.create.calledOnce).toBeTruthy();
-          expect(mockRepo.add.calledOnce).toBeTruthy();
+          expect(repo.get(1)).toBeTruthy();
         });
     });
     it('will not add a driver task if it conflicts with another task', () => {
@@ -239,9 +243,8 @@ describe('DriverTaskService', () => {
     });
   });
   describe('updateTask', () => {
-    // TODO add fake repo rather than mock repo to ensure entries are updated
     it('updates a driver task successfully', () => {
-      mockRepo.get.returns({
+      repo.add(1, {
         id: 1,
         type: DriverTaskType.DELIVER,
         start: 1,
@@ -255,6 +258,16 @@ describe('DriverTaskService', () => {
         conflict: false,
         invalid: false,
       });
+
+      // Precondition: Item has not been modified yet
+      let task: DriverTask = repo.get(1);
+      expect(task.type).toEqual(DriverTaskType.DELIVER);
+      expect(task.start).toEqual(1);
+      expect(task.end).toEqual(3);
+      expect(task.week).toEqual(1);
+      expect(task.day).toEqual(1);
+      expect(task.location).toEqual('Toronto');
+      expect(task.userID).toEqual(1);
 
       return service
         .updateTask(
@@ -271,7 +284,6 @@ describe('DriverTaskService', () => {
           new User(1, UserType.DISPATCHER),
         )
         .then((task) => {
-          expect(mockRepo.get.calledOnce).toBeTruthy();
           expect(task.type).toEqual(DriverTaskType.OTHER);
           expect(task.start).toEqual(5);
           expect(task.end).toEqual(6);
@@ -279,6 +291,9 @@ describe('DriverTaskService', () => {
           expect(task.day).toEqual(2);
           expect(task.location).toEqual('Guelph');
           expect(task.userID).toEqual(2);
+          // As another confidence check: The record returned should match the record retrieved directly from repo
+          let repoTask: DriverTask = repo.get(1);
+          expect(repoTask).toEqual(task);
         });
     });
     it('will not update a driver task if its new schedule conflicts with another task', () => {
@@ -418,17 +433,64 @@ describe('DriverTaskService', () => {
           expect(err.type).toEqual(ServiceErrorType.INSUFFICIENT_PERMISSIONS);
         });
     });
+    it('will throw an error if updating a driver task that does not exist', async () => {
+      await expect(
+        service.updateTask(
+          1,
+          {
+            type: DriverTaskType.OTHER,
+            start: 5,
+            end: 6,
+            week: 2,
+            day: 2,
+            location: 'Guelph',
+            userID: 2,
+          },
+          new User(1, UserType.DISPATCHER),
+        ),
+      ).rejects.toThrow();
+    });
   });
   describe('deleteTask', () => {
-    // TODO add fake repo rather than mock repo to ensure entries are deleted
     it('deletes a driver task successfully', () => {
-      throw new Error('Not implemented');
+      repo.add(1, {
+        id: 1,
+        type: DriverTaskType.DELIVER,
+        start: 1,
+        end: 3,
+        week: 1,
+        day: 1,
+        location: 'Toronto',
+        userID: 1,
+      });
+
+      return service.deleteTask(1, new User(1, UserType.DISPATCHER));
     });
     it('will refuse to delete a driver task if user does not have dispatcher permissions', () => {
-      throw new Error('Not implemented');
+      repo.add(1, {
+        id: 1,
+        type: DriverTaskType.DELIVER,
+        start: 1,
+        end: 3,
+        week: 1,
+        day: 1,
+        location: 'Toronto',
+        userID: 1,
+      });
+
+      return service
+        .deleteTask(1, new User(1, UserType.DRIVER))
+        .then(() => {
+          fail('User deleted task with insufficient permissions');
+        })
+        .catch((err: ServiceError) => {
+          expect(err.type).toEqual(ServiceErrorType.INSUFFICIENT_PERMISSIONS);
+        });
     });
-    it('will return an error if task of specified id does not exist', () => {
-      throw new Error('Not implemented');
+    it('will throw an error if task of specified id does not exist', async () => {
+      await expect(
+        service.deleteTask(1, new User(1, UserType.DISPATCHER)),
+      ).rejects.toThrow();
     });
   });
   describe('getWeeklyUserTasks', () => {

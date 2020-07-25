@@ -19,6 +19,9 @@ export default class Repository<T extends Model> {
   }
 
   public delete(key: number) {
+    if (!this.storage.has(key)) {
+      throw new Error(`Item with key ${key} not found`);
+    }
     this.storage.delete(key);
   }
 }

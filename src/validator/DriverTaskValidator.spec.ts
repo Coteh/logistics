@@ -7,27 +7,25 @@ import DriverTaskValidator, {
 import { DriverTaskType } from '../type/DriverTaskType';
 
 describe('DriverTaskValidator', () => {
-  let mockRepo: StubbedClass<DriverTaskRepository>;
+  let repo: DriverTaskRepository;
   let validator: DriverTaskValidator;
 
   beforeEach(() => {
-    mockRepo = createSinonStubInstance(DriverTaskRepository);
-    validator = new DriverTaskValidator(mockRepo);
+    repo = new DriverTaskRepository();
+    validator = new DriverTaskValidator(repo);
   });
 
   it('validates a driver task that does not conflict with any other driver task', () => {
-    mockRepo.getWeeklyTasksByUserID.returns([
-      {
-        id: 1,
-        type: DriverTaskType.DELIVER,
-        start: 8,
-        end: 9,
-        week: 1,
-        day: 1,
-        location: 'Toronto',
-        userID: 1,
-      },
-    ]);
+    repo.add(1, {
+      id: 1,
+      type: DriverTaskType.DELIVER,
+      start: 8,
+      end: 9,
+      week: 1,
+      day: 1,
+      location: 'Toronto',
+      userID: 1,
+    });
 
     let result: DriverTaskValidationResult = validator.validateTaskEntry({
       start: 1,
@@ -42,8 +40,6 @@ describe('DriverTaskValidator', () => {
     expect(result.conflictingTasks).toBeUndefined();
   });
   it('validates a driver task when there are no other driver tasks (ie. it is the first one)', () => {
-    mockRepo.getWeeklyTasksByUserID.returns([]);
-
     let result: DriverTaskValidationResult = validator.validateTaskEntry({
       start: 1,
       end: 3,
@@ -57,9 +53,16 @@ describe('DriverTaskValidator', () => {
     expect(result.conflictingTasks).toBeUndefined();
   });
   it('validates a driver task when there are two tasks that overlap but have different drivers', () => {
-    // TODO rewrite using fake repo instead of fake repo so that
-    // we can ensure that data exists in the test and it's being used in expected manner
-    // mockRepo.getWeeklyTasksByUserID.returns([]);
+    repo.add(1, {
+      id: 1,
+      type: DriverTaskType.DELIVER,
+      start: 1,
+      end: 2,
+      week: 1,
+      day: 1,
+      location: 'Toronto',
+      userID: 1,
+    });
 
     let result: DriverTaskValidationResult = validator.validateTaskEntry({
       start: 1,
@@ -74,18 +77,16 @@ describe('DriverTaskValidator', () => {
     expect(result.conflictingTasks).toBeUndefined();
   });
   it('invalidates a driver task when two tasks conflict', () => {
-    mockRepo.getWeeklyTasksByUserID.returns([
-      {
-        id: 1,
-        type: DriverTaskType.DELIVER,
-        start: 2,
-        end: 3,
-        week: 1,
-        day: 1,
-        location: 'Toronto',
-        userID: 1,
-      },
-    ]);
+    repo.add(1, {
+      id: 1,
+      type: DriverTaskType.DELIVER,
+      start: 1,
+      end: 2,
+      week: 1,
+      day: 1,
+      location: 'Toronto',
+      userID: 1,
+    });
 
     let result: DriverTaskValidationResult = validator.validateTaskEntry({
       start: 1,
@@ -98,18 +99,16 @@ describe('DriverTaskValidator', () => {
     expect(result.conflict).toBeTruthy();
   });
   it('returns the conflicting driver task(s) when two tasks conflict', () => {
-    mockRepo.getWeeklyTasksByUserID.returns([
-      {
-        id: 1,
-        type: DriverTaskType.DELIVER,
-        start: 2,
-        end: 3,
-        week: 1,
-        day: 1,
-        location: 'Toronto',
-        userID: 1,
-      },
-    ]);
+    repo.add(1, {
+      id: 1,
+      type: DriverTaskType.DELIVER,
+      start: 1,
+      end: 2,
+      week: 1,
+      day: 1,
+      location: 'Toronto',
+      userID: 1,
+    });
 
     let result: DriverTaskValidationResult = validator.validateTaskEntry({
       start: 1,
@@ -122,8 +121,6 @@ describe('DriverTaskValidator', () => {
     expect(result.conflictingTasks).toHaveLength(1);
   });
   it('invalidates a driver task if start and end time are the same', () => {
-    mockRepo.getWeeklyTasksByUserID.returns([]);
-
     let result: DriverTaskValidationResult = validator.validateTaskEntry({
       start: 1,
       end: 1,
@@ -135,8 +132,6 @@ describe('DriverTaskValidator', () => {
     expect(result.invalid).toBeTruthy();
   });
   it('invalidates a driver task if end time is before start time', () => {
-    mockRepo.getWeeklyTasksByUserID.returns([]);
-
     let result: DriverTaskValidationResult = validator.validateTaskEntry({
       start: 3,
       end: 1,
