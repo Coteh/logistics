@@ -13,6 +13,9 @@ interface DriverTaskIntervalQuery {
   endDay: number;
 }
 
+/**
+ * Repository for driver tasks with additional methods to retrieve weekly and interval tasks.
+ */
 export class DriverTaskRepository extends Repository<DriverTask> {
   public getWeeklyTasksByUserID(query: DriverTaskWeekQuery): DriverTask[] {
     return Array.from(this.storage.values()).filter((task) => {

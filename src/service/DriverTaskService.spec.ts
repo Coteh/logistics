@@ -1,9 +1,6 @@
 import 'jest';
 import DriverTaskService, { ConflictServiceError } from './DriverTaskService';
 import DriverTaskFactory from '../factory/DriverTaskFactory';
-import { DriverTaskInput } from '../input/DriverTaskInput';
-import * as sinon from 'sinon';
-import { SinonStubbedInstance } from 'sinon';
 import { DriverTaskRepository } from '../repository/DriverTaskRepository';
 import { createSinonStubInstance, StubbedClass } from '../../test/test_helper';
 import DriverTask from '../model/DriverTask';
@@ -495,12 +492,52 @@ describe('DriverTaskService', () => {
   });
   describe('getWeeklyUserTasks', () => {
     it("will get a given user's tasks at specified week", () => {
-      throw new Error('Not implemented');
+      repo.add(1, {
+        id: 1,
+        type: DriverTaskType.DELIVER,
+        start: 1,
+        end: 3,
+        week: 1,
+        day: 1,
+        location: 'Toronto',
+        userID: 1,
+      });
+      repo.add(2, {
+        id: 2,
+        type: DriverTaskType.DELIVER,
+        start: 1,
+        end: 3,
+        week: 2,
+        day: 1,
+        location: 'Toronto',
+        userID: 1,
+      });
+
+      return service
+        .getWeeklyUserTasks(1, 1, new User(1, UserType.DISPATCHER))
+        .then((tasks) => {
+          expect(tasks).toHaveLength(1);
+          expect(tasks).toContainEqual({
+            id: 1,
+            type: DriverTaskType.DELIVER,
+            start: 1,
+            end: 3,
+            week: 1,
+            day: 1,
+            location: 'Toronto',
+            userID: 1,
+          });
+        });
     });
-  });
-  describe('getDayIntervalUserTasks', () => {
-    it("will get a given user's tasks from the start of the day interval to the end", () => {
-      throw new Error('Not implemented');
+    it("will throw an error if driver attempts to access another driver's weekly tasks", () => {
+      service
+        .getWeeklyUserTasks(1, 1, new User(2, UserType.DRIVER))
+        .then(() => {
+          fail("Driver was able to access tasks they don't have access to");
+        })
+        .catch((err: ServiceError) => {
+          expect(err.type).toEqual(ServiceErrorType.INSUFFICIENT_PERMISSIONS);
+        });
     });
   });
 });

@@ -47,6 +47,15 @@ export default class DriverTaskService {
     }
   }
 
+  private async checkAccessPermissions(user: User, accessUserID: number) {
+    if (user.type !== UserType.DISPATCHER && user.id !== accessUserID) {
+      throw {
+        message: 'User does not have permission to view these tasks',
+        type: ServiceErrorType.INSUFFICIENT_PERMISSIONS,
+      };
+    }
+  }
+
   private async checkTaskConflicts(args: DriverTaskInput): Promise<void> {
     let result: DriverTaskValidationResult = this.driverTaskValidator.validateTaskEntry(
       {
@@ -113,35 +122,18 @@ export default class DriverTaskService {
     this.driverTaskRepo.delete(id);
   }
 
-  public getWeeklyUserTasks(
+  public async getWeeklyUserTasks(
     userID: number,
     week: number,
     user: User,
   ): Promise<DriverTask[]> {
-    return new Promise((resolve, reject) => {
-      // TODO ensure user has role to access selected tasks
-
-      resolve(
-        this.driverTaskRepo.getWeeklyTasksByUserID({
-          userID,
-          startWeek: week,
-          endWeek: week,
-        }),
-      );
-    });
-  }
-
-  public getDayIntervalUserTasks(
-    userID: number,
-    dayInterval: number,
-    user: User,
-  ): Promise<DriverTask[]> {
-    return new Promise((resolve, reject) => {
-      // TODO ensure user has role to access selected tasks
-
-      reject({
-        message: 'Not implemented',
-      });
+    // Ensure user has role to access selected tasks
+    await this.checkAccessPermissions(user, userID);
+    // Get weekly tasks
+    return this.driverTaskRepo.getWeeklyTasksByUserID({
+      userID,
+      startWeek: week,
+      endWeek: week,
     });
   }
 }
