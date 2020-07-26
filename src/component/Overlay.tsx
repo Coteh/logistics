@@ -19,6 +19,7 @@ export default function Overlay(props: IProps) {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         padding: '16px',
+        zIndex: 500,
       }}
     >
       <div

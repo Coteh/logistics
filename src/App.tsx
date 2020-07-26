@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  Context,
-  createContext,
-} from 'react';
+import React, { useState, useEffect, Context, createContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Calendar from './component/Calendar';
@@ -49,8 +43,8 @@ function App() {
   const [selectedUserID, setSelectedUserID] = useState(1);
   const [selectedDriverTaskID, setSelectedDriverTaskID] = useState(1);
   const [selectedWeek, setSelectedWeek] = useState(1);
-  const [tasks, setTasks] = useState(new Array());
-  const [notifications, setNotifications] = useState(new Array());
+  const [tasks, setTasks] = useState<DriverTask[]>([]);
+  const [notifications, setNotifications] = useState<string[]>([]);
   const [currOverlay, setCurrOverlay] = useState<JSX.Element | null>(null);
 
   const addTask = <AddDriverTask addNewTaskFunc={addNewTask} />;
@@ -71,7 +65,7 @@ function App() {
         loggedInUser,
       )
       .then((task) => {
-        setTasks(tasks.concat(task));
+        setTasks((tasks) => tasks.concat(task));
       });
   }, []);
 
@@ -150,6 +144,7 @@ function App() {
                 height: '100vh',
                 backgroundColor: 'black',
                 opacity: '0.4',
+                zIndex: 499,
               }}
             ></div>
           );

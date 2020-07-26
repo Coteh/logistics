@@ -9,8 +9,17 @@ import DriverTaskValidator, {
 } from '../validator/DriverTaskValidator';
 import ServiceError, { ServiceErrorType } from './ServiceError';
 
-export interface ConflictServiceError extends ServiceError {
-  conflictingTasks: DriverTask[];
+export class ConflictServiceError extends ServiceError {
+  public conflictingTasks?: DriverTask[];
+
+  constructor(
+    message: string,
+    type: ServiceErrorType,
+    conflictingTasks?: DriverTask[],
+  ) {
+    super(message, type);
+    this.conflictingTasks = conflictingTasks;
+  }
 }
 
 /**
@@ -40,19 +49,19 @@ export default class DriverTaskService {
 
   private async checkModifyPermissions(user: User): Promise<void> {
     if (user.type !== UserType.DISPATCHER) {
-      throw {
-        message: 'User does not have permission to perform this action',
-        type: ServiceErrorType.INSUFFICIENT_PERMISSIONS,
-      };
+      throw new ServiceError(
+        'User does not have permission to perform this action',
+        ServiceErrorType.INSUFFICIENT_PERMISSIONS,
+      );
     }
   }
 
   private async checkAccessPermissions(user: User, accessUserID: number) {
     if (user.type !== UserType.DISPATCHER && user.id !== accessUserID) {
-      throw {
-        message: 'User does not have permission to view these tasks',
-        type: ServiceErrorType.INSUFFICIENT_PERMISSIONS,
-      };
+      throw new ServiceError(
+        'User does not have permission to view these tasks',
+        ServiceErrorType.INSUFFICIENT_PERMISSIONS,
+      );
     }
   }
 
@@ -67,17 +76,17 @@ export default class DriverTaskService {
       },
     );
     if (result.invalid) {
-      throw {
-        message: 'New task has invalid start and/or end time',
-        type: ServiceErrorType.INVALID_TIME_SLOT,
-      };
+      throw new ServiceError(
+        'New task has invalid start and/or end time',
+        ServiceErrorType.INVALID_TIME_SLOT,
+      );
     }
     if (result.conflict) {
-      throw {
-        message: 'New task conflicts with one or more tasks',
-        type: ServiceErrorType.TASK_CONFLICT,
-        conflictingTasks: result.conflictingTasks,
-      };
+      throw new ConflictServiceError(
+        'New task conflicts with one or more tasks',
+        ServiceErrorType.TASK_CONFLICT,
+        result.conflictingTasks,
+      );
     }
   }
 

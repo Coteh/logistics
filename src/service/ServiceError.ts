@@ -1,6 +1,10 @@
-export default interface ServiceError {
-  message: string;
-  type: ServiceErrorType;
+export default class ServiceError extends Error {
+  public type: ServiceErrorType;
+
+  constructor(message: string, type: ServiceErrorType) {
+    super(message);
+    this.type = type;
+  }
 }
 
 export enum ServiceErrorType {
