@@ -3,6 +3,7 @@ import { hoursToTimeString } from '../util/time_util';
 import { DriverTaskInput } from '../input/DriverTaskInput';
 import { DriverTaskType, driverTaskString } from '../type/DriverTaskType';
 import { AppContext } from '../App';
+import Button from '../component/Button';
 
 interface IProps {
   defaultDay?: number;
@@ -78,7 +79,6 @@ export default function AddDriverTask(props: IProps) {
   const app = useContext(AppContext);
 
   function onSubmit() {
-    // TODO propagate error message back to App
     if (!taskType) {
       app.displayNotification('Please select a task type');
       return;
@@ -116,7 +116,11 @@ export default function AddDriverTask(props: IProps) {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        margin: '0 auto',
+      }}
+    >
       <h2>Add New Task</h2>
       <form onSubmit={(e) => e.preventDefault()}>
         <table
@@ -219,7 +223,7 @@ export default function AddDriverTask(props: IProps) {
             </tr>
           </tbody>
         </table>
-        <button onClick={onSubmit}>Submit</button>
+        <Button onClick={onSubmit} label="Submit"></Button>
       </form>
     </div>
   );

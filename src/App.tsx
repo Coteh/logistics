@@ -22,6 +22,7 @@ import DriverTask from './model/DriverTask';
 import ServiceError from './service/ServiceError';
 import DriverTaskValidator from './validator/DriverTaskValidator';
 import Notification from './component/Notification';
+import Button from './component/Button';
 
 const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
@@ -36,6 +37,7 @@ function getClampedWeek(week: number) {
 
 type AppContextType = {
   displayNotification: Function;
+  closeOverlay: Function;
 };
 
 export const AppContext: Context<AppContextType> = createContext(
@@ -95,6 +97,10 @@ function App() {
       });
       clearTimeout(timeout);
     }, 2000);
+  }
+
+  function closeOverlay() {
+    setCurrOverlay(null);
   }
 
   function addNewTask(args: DriverTaskInput) {
@@ -157,8 +163,8 @@ function App() {
           display: 'flex',
         }}
       >
-        <button onClick={() => setCurrOverlay(addTask)}>Create</button>
-        <button>Download</button>
+        <Button onClick={() => setCurrOverlay(addTask)} label="Create"></Button>
+        <Button label="Download"></Button>
       </div>
       <div
         style={{
@@ -195,7 +201,7 @@ function App() {
           margin: '0 auto',
         }}
       >
-        <AppContext.Provider value={{ displayNotification }}>
+        <AppContext.Provider value={{ displayNotification, closeOverlay }}>
           {(() => {
             if (currOverlay) {
               return <Overlay container={currOverlay} />;
