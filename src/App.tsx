@@ -10,7 +10,7 @@ import { DriverTaskRepository } from './repository/DriverTaskRepository';
 import User from './model/User';
 import { UserType } from './type/UserType';
 import Overlay from './component/Overlay';
-import AddDriverTask from './section/AddDriverTask';
+import EditDriverTask from './section/EditDriverTask';
 import { DriverTaskInput } from './input/DriverTaskInput';
 import DriverTask from './model/DriverTask';
 import ServiceError from './service/ServiceError';
@@ -32,6 +32,7 @@ function getClampedWeek(week: number) {
 type AppContextType = {
   displayNotification: Function;
   closeOverlay: Function;
+  performTaskEdit: Function;
 };
 
 export const AppContext: Context<AppContextType> = createContext(
@@ -47,7 +48,9 @@ function App() {
   const [notifications, setNotifications] = useState<string[]>([]);
   const [currOverlay, setCurrOverlay] = useState<JSX.Element | null>(null);
 
-  const addTask = <AddDriverTask addNewTaskFunc={addNewTask} />;
+  const addTaskElem = (
+    <EditDriverTask label="Add New Task" submitFunc={addNewTask} />
+  );
 
   // TODO remove
   useEffect(() => {
@@ -97,6 +100,22 @@ function App() {
     setCurrOverlay(null);
   }
 
+  function performTaskEdit(driverTask: DriverTask) {
+    setSelectedDriverTaskID(driverTask.id);
+    setCurrOverlay(
+      <EditDriverTask
+        defaultType={driverTask.type}
+        defaultStart={driverTask.start}
+        defaultEnd={driverTask.end}
+        defaultLocation={driverTask.location}
+        defaultDay={driverTask.day}
+        defaultWeek={driverTask.week}
+        label="Edit Task"
+        submitFunc={updateTask}
+      />,
+    );
+  }
+
   function addNewTask(args: DriverTaskInput) {
     driverTaskService
       .addTask(args, loggedInUser)
@@ -114,10 +133,10 @@ function App() {
     driverTaskService
       .updateTask(selectedDriverTaskID, args, loggedInUser)
       .then((res) => {
-        console.log('Updating successful');
+        displayNotification('Updating successful');
       })
       .catch((err) => {
-        console.log(err.message);
+        displayNotification(err.message);
       });
   }
 
@@ -125,10 +144,10 @@ function App() {
     driverTaskService
       .deleteTask(driverTaskId, loggedInUser)
       .then((res) => {
-        console.log('Deleting successful');
+        displayNotification('Deleting successful');
       })
       .catch((err) => {
-        console.log(err.message);
+        displayNotification(err.message);
       });
   }
 
@@ -158,7 +177,10 @@ function App() {
           display: 'flex',
         }}
       >
-        <Button onClick={() => setCurrOverlay(addTask)} label="Create"></Button>
+        <Button
+          onClick={() => setCurrOverlay(addTaskElem)}
+          label="Create"
+        ></Button>
         <Button label="Download"></Button>
       </div>
       <div
@@ -189,14 +211,16 @@ function App() {
           </button>
         </div>
       </div>
-      <Calendar tasks={tasks} />
-      <div
-        style={{
-          position: 'absolute',
-          margin: '0 auto',
-        }}
+      <AppContext.Provider
+        value={{ displayNotification, closeOverlay, performTaskEdit }}
       >
-        <AppContext.Provider value={{ displayNotification, closeOverlay }}>
+        <Calendar tasks={tasks} />
+        <div
+          style={{
+            position: 'absolute',
+            margin: '0 auto',
+          }}
+        >
           {(() => {
             if (currOverlay) {
               return <Overlay container={currOverlay} />;
@@ -209,8 +233,8 @@ function App() {
               message={notification}
             />
           ))}
-        </AppContext.Provider>
-      </div>
+        </div>
+      </AppContext.Provider>
     </div>
   );
 }

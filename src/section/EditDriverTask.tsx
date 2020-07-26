@@ -6,9 +6,14 @@ import { AppContext } from '../App';
 import Button from '../component/Button';
 
 interface IProps {
+  label: string;
+  defaultType?: DriverTaskType;
+  defaultStart?: number;
+  defaultEnd?: number;
+  defaultLocation?: string;
   defaultDay?: number;
   defaultWeek?: number;
-  addNewTaskFunc: Function;
+  submitFunc: Function;
 }
 
 function populateDiscreteTimeOptions() {
@@ -66,13 +71,22 @@ function populateDiscreteDayOptions() {
   );
 }
 
-export default function AddDriverTask(props: IProps) {
-  const { defaultDay, defaultWeek, addNewTaskFunc } = props;
+export default function EditDriverTask(props: IProps) {
+  const {
+    label,
+    defaultType,
+    defaultStart,
+    defaultEnd,
+    defaultLocation,
+    defaultDay,
+    defaultWeek,
+    submitFunc,
+  } = props;
 
-  const [taskType, setTaskType] = useState(DriverTaskType.NONE);
-  const [startTime, setStartTime] = useState(1);
-  const [endTime, setEndTime] = useState(3);
-  const [location, setLocation] = useState('Toronto');
+  const [taskType, setTaskType] = useState(defaultType || DriverTaskType.NONE);
+  const [startTime, setStartTime] = useState(defaultStart || 1);
+  const [endTime, setEndTime] = useState(defaultEnd || 3);
+  const [location, setLocation] = useState(defaultLocation || 'Toronto');
   const [day, setDay] = useState(defaultDay || 1);
   const [week, setWeek] = useState(defaultWeek || 1);
 
@@ -112,7 +126,7 @@ export default function AddDriverTask(props: IProps) {
       userID: 1,
       location: 'Toronto',
     };
-    addNewTaskFunc(args);
+    submitFunc(args);
   }
 
   return (
@@ -121,7 +135,7 @@ export default function AddDriverTask(props: IProps) {
         margin: '0 auto',
       }}
     >
-      <h2>Add New Task</h2>
+      <h2>{label}</h2>
       <form onSubmit={(e) => e.preventDefault()}>
         <table
           style={{

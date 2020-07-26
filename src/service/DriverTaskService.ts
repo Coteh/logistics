@@ -65,7 +65,10 @@ export default class DriverTaskService {
     }
   }
 
-  private async checkTaskConflicts(args: DriverTaskInput): Promise<void> {
+  private async checkTaskValidity(
+    args: DriverTaskInput,
+    ignoreIDs?: number[],
+  ): Promise<void> {
     let result: DriverTaskValidationResult = this.driverTaskValidator.validateTaskEntry(
       {
         start: args.start,
@@ -73,6 +76,7 @@ export default class DriverTaskService {
         day: args.day,
         week: args.week,
         userID: args.userID,
+        ignoreIDs: ignoreIDs,
       },
     );
     if (result.invalid) {
@@ -94,7 +98,7 @@ export default class DriverTaskService {
     // Ensure user has role to update task
     await this.checkModifyPermissions(user);
     // Ensure updated task is valid (ie. does not conflict with any other task)
-    await this.checkTaskConflicts(args);
+    await this.checkTaskValidity(args);
     // Perform add action
     let driverTask = this.driverTaskFactory.create(args);
     this.driverTaskRepo.add(driverTask.id, driverTask);
@@ -110,7 +114,7 @@ export default class DriverTaskService {
     // Ensure user has role to add task
     await this.checkModifyPermissions(user);
     // Ensure task is valid (ie. does not conflict with any other task)
-    await this.checkTaskConflicts(args);
+    await this.checkTaskValidity(args, [id]);
     // Perform update action
     let driverTask = this.driverTaskRepo.get(id);
     driverTask.type = args.type;

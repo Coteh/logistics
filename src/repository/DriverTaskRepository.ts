@@ -5,6 +5,7 @@ interface DriverTaskWeekQuery {
   userID: number;
   startWeek: number;
   endWeek: number;
+  ignoreIDs?: number[];
 }
 
 interface DriverTaskIntervalQuery {
@@ -22,7 +23,8 @@ export class DriverTaskRepository extends Repository<DriverTask> {
       return (
         task.userID === query.userID &&
         task.week >= query.startWeek &&
-        task.week <= query.endWeek
+        task.week <= query.endWeek &&
+        (!query.ignoreIDs || !query.ignoreIDs.some((id) => id === task.id))
       );
     });
   }

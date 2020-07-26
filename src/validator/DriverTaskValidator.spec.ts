@@ -158,6 +158,29 @@ describe('DriverTaskValidator', () => {
 
     expect(result.conflict).toBeFalsy();
   });
+  it('does not report a conflict with itself', () => {
+    repo.add(1, {
+      id: 1,
+      type: DriverTaskType.DELIVER,
+      start: 1,
+      end: 2,
+      week: 1,
+      day: 2,
+      location: 'Toronto',
+      userID: 1,
+    });
+
+    let result: DriverTaskValidationResult = validator.validateTaskEntry({
+      start: 1,
+      end: 2,
+      week: 1,
+      day: 2,
+      userID: 1,
+      ignoreIDs: [1],
+    });
+
+    expect(result.conflict).toBeFalsy();
+  });
   it('reports a conflict when two driver tasks overlap', () => {
     repo.add(1, {
       id: 1,

@@ -24,6 +24,7 @@ export default function Notification(props: IProps) {
         border: '1px solid grey',
         backgroundColor: 'white',
         padding: '30px 90px',
+        zIndex: 500,
       }}
     >
       {message}

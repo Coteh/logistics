@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { driverTaskString } from '../type/DriverTaskType';
 import DriverTask from '../model/DriverTask';
 import { createHoursArr, hoursToTimeString } from '../util/time_util';
 import CalendarColumn from './CalendarColumn';
 import CalendarHeader from './CalendarHeader';
+import { AppContext } from '../App';
 
 interface IProps {
   tasks: DriverTask[];
@@ -26,6 +27,8 @@ export default function Calendar(props: IProps) {
   const padding = 8;
 
   const { tasks } = props;
+
+  const app = useContext(AppContext);
 
   return (
     <>
@@ -103,6 +106,7 @@ export default function Calendar(props: IProps) {
                         height: (task.end - task.start) * cellHeight + 'px',
                         width: '100%',
                       }}
+                      onClick={() => app.performTaskEdit(task)}
                     >
                       <span
                         style={{

@@ -7,6 +7,7 @@ interface DriverTaskArgs {
   day: number;
   week: number;
   userID: number;
+  ignoreIDs?: number[];
 }
 
 export interface DriverTaskValidationResult {
@@ -27,6 +28,7 @@ export default class DriverTaskValidator {
       userID: args.userID,
       startWeek: args.week,
       endWeek: args.week,
+      ignoreIDs: args.ignoreIDs,
     });
     let conflictingTasks: DriverTask[] = userTasks.filter((task) => {
       return (
