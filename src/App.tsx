@@ -49,21 +49,28 @@ function App() {
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [tasks, setTasks] = useState(new Array());
   const [notifications, setNotifications] = useState(new Array());
+  const [currOverlay, setCurrOverlay] = useState<JSX.Element | null>(null);
+
+  const addTask = <AddDriverTask addNewTaskFunc={addNewTask} />;
 
   // TODO remove
   useEffect(() => {
-    driverTaskService.addTask(
-      {
-        start: 14,
-        end: 16,
-        type: DriverTaskType.DELIVER,
-        day: 1,
-        week: 1,
-        userID: 1,
-        location: 'Toronto',
-      },
-      loggedInUser,
-    );
+    driverTaskService
+      .addTask(
+        {
+          start: 14,
+          end: 16,
+          type: DriverTaskType.DELIVER,
+          day: 1,
+          week: 1,
+          userID: 1,
+          location: 'Toronto',
+        },
+        loggedInUser,
+      )
+      .then((task) => {
+        setTasks(tasks.concat(task));
+      });
   }, []);
 
   useEffect(() => {
@@ -97,9 +104,10 @@ function App() {
         displayNotification('Adding successful');
         setTasks(tasks.concat(task));
       })
-      .catch((err) => {
-        displayNotification(err);
+      .catch((err: ServiceError) => {
+        displayNotification(err.message);
       });
+    setCurrOverlay(null);
   }
 
   function updateTask(args: DriverTaskInput) {
@@ -126,6 +134,21 @@ function App() {
 
   return (
     <div className="App">
+      {(() => {
+        if (currOverlay) {
+          return (
+            <div
+              style={{
+                position: 'fixed',
+                width: '100vw',
+                height: '100vh',
+                backgroundColor: 'black',
+                opacity: '0.4',
+              }}
+            ></div>
+          );
+        }
+      })()}
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </header>
@@ -134,7 +157,7 @@ function App() {
           display: 'flex',
         }}
       >
-        <button>Create</button>
+        <button onClick={() => setCurrOverlay(addTask)}>Create</button>
         <button>Download</button>
       </div>
       <div
@@ -172,11 +195,19 @@ function App() {
           margin: '0 auto',
         }}
       >
-        {notifications.map((notification, i) => (
-          <Notification key={`notif_${i}`} message={notification} />
-        ))}
         <AppContext.Provider value={{ displayNotification }}>
-          <Overlay container={<AddDriverTask addNewTaskFunc={addNewTask} />} />
+          {(() => {
+            if (currOverlay) {
+              return <Overlay container={currOverlay} />;
+            }
+          })()}
+          {notifications.map((notification, i) => (
+            <Notification
+              key={`notif_${i}`}
+              notificationIndex={i}
+              message={notification}
+            />
+          ))}
         </AppContext.Provider>
       </div>
     </div>

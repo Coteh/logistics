@@ -10,14 +10,23 @@ export default function Overlay(props: IProps) {
   return (
     <div
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        width: '300px',
-        height: '300px',
-        backgroundColor: 'grey',
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
       }}
     >
-      {container}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '300px',
+          height: '300px',
+          backgroundColor: 'grey',
+        }}
+      >
+        {container}
+      </div>
     </div>
   );
 }
