@@ -17,6 +17,7 @@ import ServiceError from './service/ServiceError';
 import DriverTaskValidator from './validator/DriverTaskValidator';
 import Notification from './component/Notification';
 import Button from './component/Button';
+import Confirm from './section/Confirm';
 
 const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
@@ -47,6 +48,9 @@ function App() {
   const [tasks, setTasks] = useState<DriverTask[]>([]);
   const [notifications, setNotifications] = useState<string[]>([]);
   const [currOverlay, setCurrOverlay] = useState<JSX.Element | null>(null);
+  const [currOverlayMenuItems, setCurrOverlayMenuItems] = useState<
+    JSX.Element[]
+  >([]);
 
   const addTaskElem = (
     <EditDriverTask label="Add New Task" submitFunc={addNewTask} />
@@ -98,6 +102,7 @@ function App() {
 
   function closeOverlay() {
     setCurrOverlay(null);
+    setCurrOverlayMenuItems([]);
   }
 
   function performTaskEdit(driverTask: DriverTask) {
@@ -114,6 +119,24 @@ function App() {
         submitFunc={updateTask}
       />,
     );
+    setCurrOverlayMenuItems((menuItems) => [
+      ...menuItems,
+      <Button
+        onClick={() => performTaskDeletion(driverTask)}
+        label="Delete"
+      ></Button>,
+    ]);
+  }
+
+  function performTaskDeletion(driverTask: DriverTask) {
+    closeOverlay();
+    setCurrOverlay(
+      <Confirm
+        label="Are you sure you want to delete this task? It cannot be undone."
+        yesFunc={() => deleteTask(selectedDriverTaskID)}
+        noFunc={() => performTaskEdit(driverTask)}
+      ></Confirm>,
+    );
   }
 
   function addNewTask(args: DriverTaskInput) {
@@ -126,7 +149,7 @@ function App() {
       .catch((err: ServiceError) => {
         displayNotification(err.message);
       });
-    setCurrOverlay(null);
+    closeOverlay();
   }
 
   function updateTask(args: DriverTaskInput) {
@@ -138,6 +161,7 @@ function App() {
       .catch((err) => {
         displayNotification(err.message);
       });
+    closeOverlay();
   }
 
   function deleteTask(driverTaskId: number) {
@@ -149,6 +173,7 @@ function App() {
       .catch((err) => {
         displayNotification(err.message);
       });
+    closeOverlay();
   }
 
   return (
@@ -223,7 +248,12 @@ function App() {
         >
           {(() => {
             if (currOverlay) {
-              return <Overlay container={currOverlay} />;
+              return (
+                <Overlay
+                  contextMenuItems={currOverlayMenuItems}
+                  container={currOverlay}
+                />
+              );
             }
           })()}
           {notifications.map((notification, i) => (

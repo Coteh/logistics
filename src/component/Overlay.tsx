@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, Fragment } from 'react';
 import Button from './Button';
 import { AppContext } from '../App';
 
 interface IProps {
-  container: any;
+  container: JSX.Element;
+  contextMenuItems?: JSX.Element[];
 }
 
 export default function Overlay(props: IProps) {
-  const { container } = props;
+  const { container, contextMenuItems } = props;
 
   const app = useContext(AppContext);
 
@@ -39,6 +40,9 @@ export default function Overlay(props: IProps) {
             right: '5%',
           }}
         >
+          {contextMenuItems?.map((menuItem, i) => (
+            <Fragment key={`menu_item_${i}`}>{menuItem}</Fragment>
+          ))}
           <Button onClick={app.closeOverlay} label="X"></Button>
         </div>
         {container}
