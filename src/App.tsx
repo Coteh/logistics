@@ -2,7 +2,6 @@ import React, { useState, useEffect, Context, createContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Calendar from './component/Calendar';
-import { DriverTaskType } from './type/DriverTaskType';
 import DriverTaskService from './service/DriverTaskService';
 import DriverTaskFactory from './factory/DriverTaskFactory';
 import IdGenerator from './gen/IdGenerator';
@@ -26,6 +25,12 @@ const driverTaskService: DriverTaskService = new DriverTaskService(
   new DriverTaskValidator(driverTaskRepo),
 );
 
+const driverUsers = [
+  new User(2, UserType.DRIVER, 'John Smith'),
+  new User(3, UserType.DRIVER, 'Fierce Bob'),
+  new User(4, UserType.DRIVER, 'Jane Doe'),
+];
+
 function getClampedWeek(week: number) {
   return ((((week - 1) % 52) + 52) % 52) + 1;
 }
@@ -42,7 +47,9 @@ export const AppContext: Context<AppContextType> = createContext(
 
 function App() {
   const [loggedInUser] = useState(new User(1, UserType.DISPATCHER));
-  const [selectedUserID, setSelectedUserID] = useState(1);
+  const [selectedUserID, setSelectedUserID] = useState(
+    driverUsers?.[0].id || 1,
+  );
   const [selectedDriverTaskID, setSelectedDriverTaskID] = useState(1);
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [tasks, setTasks] = useState<DriverTask[]>([]);
@@ -53,28 +60,13 @@ function App() {
   >([]);
 
   const addTaskElem = (
-    <EditDriverTask label="Add New Task" submitFunc={addNewTask} />
+    <EditDriverTask
+      userID={selectedUserID}
+      label="Add New Task"
+      submitFunc={addNewTask}
+      defaultWeek={selectedWeek}
+    />
   );
-
-  // TODO remove
-  useEffect(() => {
-    driverTaskService
-      .addTask(
-        {
-          start: 14,
-          end: 16,
-          type: DriverTaskType.DELIVER,
-          day: 1,
-          week: 1,
-          userID: 1,
-          location: 'Toronto',
-        },
-        loggedInUser,
-      )
-      .then((task) => {
-        setTasks((tasks) => tasks.concat(task));
-      });
-  }, []);
 
   useEffect(() => {
     driverTaskService
@@ -109,6 +101,7 @@ function App() {
     setSelectedDriverTaskID(driverTask.id);
     setCurrOverlay(
       <EditDriverTask
+        userID={selectedUserID}
         defaultType={driverTask.type}
         defaultStart={driverTask.start}
         defaultEnd={driverTask.end}
@@ -176,6 +169,18 @@ function App() {
     closeOverlay();
   }
 
+  function populateDriverOptions() {
+    return (
+      <>
+        {driverUsers.map((user, i) => (
+          <option key={`driver_option_${i}`} value={user.id}>
+            {user.name}
+          </option>
+        ))}
+      </>
+    );
+  }
+
   return (
     <div className="App">
       {(() => {
@@ -215,11 +220,8 @@ function App() {
       >
         <div>
           <span>Driver</span>
-          <select>
-            <option value=""></option>
-            <option value="user1">User 1</option>
-            <option value="user2">User 2</option>
-            <option value="user3">User 3</option>
+          <select onChange={(e) => setSelectedUserID(parseInt(e.target.value))}>
+            {populateDriverOptions()}
           </select>
         </div>
         <div>

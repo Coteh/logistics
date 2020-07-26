@@ -7,6 +7,7 @@ import Button from '../component/Button';
 
 interface IProps {
   label: string;
+  userID: number;
   defaultType?: DriverTaskType;
   defaultStart?: number;
   defaultEnd?: number;
@@ -74,6 +75,7 @@ function populateDiscreteDayOptions() {
 export default function EditDriverTask(props: IProps) {
   const {
     label,
+    userID,
     defaultType,
     defaultStart,
     defaultEnd,
@@ -123,7 +125,7 @@ export default function EditDriverTask(props: IProps) {
       end: endTime,
       day: day,
       week: week,
-      userID: 1,
+      userID,
       location: 'Toronto',
     };
     submitFunc(args);
