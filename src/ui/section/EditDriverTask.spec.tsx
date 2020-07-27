@@ -82,6 +82,7 @@ describe('EditDriverTask', () => {
       <AppContext.Provider
         value={{
           displayNotification: notificationStub,
+          openOverlay: () => {},
           closeOverlay: () => {},
           performTaskEdit: () => {},
         }}
@@ -89,6 +90,8 @@ describe('EditDriverTask', () => {
         <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
       </AppContext.Provider>,
     );
+
+    expect(submitStub).not.toHaveBeenCalled();
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -131,6 +134,8 @@ describe('EditDriverTask', () => {
     const { getByTestId, getByText } = render(
       <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
     );
+
+    expect(submitStub).not.toHaveBeenCalled();
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -184,6 +189,7 @@ describe('EditDriverTask', () => {
       <AppContext.Provider
         value={{
           displayNotification: notificationStub,
+          openOverlay: () => {},
           closeOverlay: () => {},
           performTaskEdit: () => {},
         }}
@@ -191,6 +197,9 @@ describe('EditDriverTask', () => {
         <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
       </AppContext.Provider>,
     );
+
+    expect(notificationStub).not.toHaveBeenCalled();
+    expect(submitStub).not.toHaveBeenCalled();
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -235,6 +244,7 @@ describe('EditDriverTask', () => {
       <AppContext.Provider
         value={{
           displayNotification: notificationStub,
+          openOverlay: () => {},
           closeOverlay: () => {},
           performTaskEdit: () => {},
         }}
@@ -242,6 +252,8 @@ describe('EditDriverTask', () => {
         <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
       </AppContext.Provider>,
     );
+
+    expect(notificationStub).not.toHaveBeenCalled();
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -277,6 +289,7 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(submitStub).not.toHaveBeenCalled();
   });
   it('should notify user about invalid start time', () => {
     const submitStub = jest.fn();
@@ -285,6 +298,7 @@ describe('EditDriverTask', () => {
       <AppContext.Provider
         value={{
           displayNotification: notificationStub,
+          openOverlay: () => {},
           closeOverlay: () => {},
           performTaskEdit: () => {},
         }}
@@ -292,6 +306,8 @@ describe('EditDriverTask', () => {
         <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
       </AppContext.Provider>,
     );
+
+    expect(notificationStub).not.toHaveBeenCalled();
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -327,6 +343,7 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(submitStub).not.toHaveBeenCalled();
   });
   it('should notify user about invalid end time', () => {
     const submitStub = jest.fn();
@@ -335,6 +352,7 @@ describe('EditDriverTask', () => {
       <AppContext.Provider
         value={{
           displayNotification: notificationStub,
+          openOverlay: () => {},
           closeOverlay: () => {},
           performTaskEdit: () => {},
         }}
@@ -342,6 +360,8 @@ describe('EditDriverTask', () => {
         <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
       </AppContext.Provider>,
     );
+
+    expect(notificationStub).not.toHaveBeenCalled();
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -377,6 +397,7 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(submitStub).not.toHaveBeenCalled();
   });
   it('should notify user about invalid day', () => {
     const submitStub = jest.fn();
@@ -385,6 +406,7 @@ describe('EditDriverTask', () => {
       <AppContext.Provider
         value={{
           displayNotification: notificationStub,
+          openOverlay: () => {},
           closeOverlay: () => {},
           performTaskEdit: () => {},
         }}
@@ -392,6 +414,8 @@ describe('EditDriverTask', () => {
         <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
       </AppContext.Provider>,
     );
+
+    expect(notificationStub).not.toHaveBeenCalled();
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -427,6 +451,7 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(submitStub).not.toHaveBeenCalled();
   });
   it('should notify user about invalid week', () => {
     const submitStub = jest.fn();
@@ -435,6 +460,7 @@ describe('EditDriverTask', () => {
       <AppContext.Provider
         value={{
           displayNotification: notificationStub,
+          openOverlay: () => {},
           closeOverlay: () => {},
           performTaskEdit: () => {},
         }}
@@ -442,6 +468,8 @@ describe('EditDriverTask', () => {
         <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
       </AppContext.Provider>,
     );
+
+    expect(notificationStub).not.toHaveBeenCalled();
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -477,5 +505,6 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(submitStub).not.toHaveBeenCalled();
   });
 });

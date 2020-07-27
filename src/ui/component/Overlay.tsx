@@ -31,6 +31,7 @@ export default function Overlay(props: IProps) {
           height: '300px',
           backgroundColor: 'white',
           borderRadius: '5px',
+          paddingTop: '30px',
         }}
       >
         <div

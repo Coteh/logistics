@@ -10,12 +10,12 @@ import DriverTaskValidator, {
 import ServiceError, { ServiceErrorType } from './ServiceError';
 
 export class ConflictServiceError extends ServiceError {
-  public conflictingTasks?: DriverTask[];
+  public conflictingTasks: DriverTask[];
 
   constructor(
     message: string,
     type: ServiceErrorType,
-    conflictingTasks?: DriverTask[],
+    conflictingTasks: DriverTask[],
   ) {
     super(message, type);
     this.conflictingTasks = conflictingTasks;
@@ -89,7 +89,7 @@ export default class DriverTaskService {
       throw new ConflictServiceError(
         'New task conflicts with one or more tasks',
         ServiceErrorType.TASK_CONFLICT,
-        result.conflictingTasks,
+        result.conflictingTasks ? result.conflictingTasks : [],
       );
     }
   }

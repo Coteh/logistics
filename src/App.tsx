@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Context, createContext } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Calendar from './ui/component/Calendar';
-import DriverTaskService from './domain/service/DriverTaskService';
+import DriverTaskService, {
+  ConflictServiceError,
+} from './domain/service/DriverTaskService';
 import DriverTaskFactory from './domain/factory/DriverTaskFactory';
 import IdGenerator from './domain/gen/IdGenerator';
 import { DriverTaskRepository } from './domain/repository/DriverTaskRepository';
@@ -12,12 +13,13 @@ import Overlay from './ui/component/Overlay';
 import EditDriverTask from './ui/section/EditDriverTask';
 import { DriverTaskInput } from './domain/input/DriverTaskInput';
 import DriverTask from './domain/model/DriverTask';
-import ServiceError from './domain/service/ServiceError';
+import ServiceError, { ServiceErrorType } from './domain/service/ServiceError';
 import DriverTaskValidator from './domain/validator/DriverTaskValidator';
 import Notification from './ui/component/Notification';
 import Button from './ui/component/Button';
 import Confirm from './ui/section/Confirm';
 import { getNumberInputFromString } from './util/input_util';
+import TaskConflict from './ui/section/TaskConflict';
 
 const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
@@ -38,6 +40,7 @@ function getClampedWeek(week: number) {
 
 type AppContextType = {
   displayNotification: Function;
+  openOverlay: Function;
   closeOverlay: Function;
   performTaskEdit: Function;
 };
@@ -51,7 +54,6 @@ function App() {
   const [selectedUserID, setSelectedUserID] = useState(
     driverUsers?.[0].id || 1,
   );
-  const [selectedDriverTaskID, setSelectedDriverTaskID] = useState(1);
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [tasks, setTasks] = useState<DriverTask[]>([]);
   const [notifications, setNotifications] = useState<string[]>([]);
@@ -80,6 +82,17 @@ function App() {
       });
   }, [selectedUserID, selectedWeek, loggedInUser]);
 
+  function reloadTasks() {
+    driverTaskService
+      .getWeeklyUserTasks(selectedUserID, selectedWeek, loggedInUser)
+      .then((res: DriverTask[]) => {
+        setTasks(res);
+      })
+      .catch((err: ServiceError) => {
+        console.log(err.message);
+      });
+  }
+
   function displayNotification(message: string) {
     setNotifications((notifications) => [...notifications, message]);
     const timeout = setTimeout(() => {
@@ -93,14 +106,21 @@ function App() {
     }, 2000);
   }
 
+  function openOverlay(
+    overlayElem: JSX.Element,
+    contextMenuItems: JSX.Element[] = [],
+  ) {
+    setCurrOverlay(overlayElem);
+    setCurrOverlayMenuItems(contextMenuItems);
+  }
+
   function closeOverlay() {
     setCurrOverlay(null);
     setCurrOverlayMenuItems([]);
   }
 
   function performTaskEdit(driverTask: DriverTask) {
-    setSelectedDriverTaskID(driverTask.id);
-    setCurrOverlay(
+    openOverlay(
       <EditDriverTask
         userID={selectedUserID}
         defaultType={driverTask.type}
@@ -110,26 +130,22 @@ function App() {
         defaultDay={driverTask.day}
         defaultWeek={driverTask.week}
         label="Edit Task"
-        submitFunc={updateTask}
+        submitFunc={(args: DriverTaskInput) => updateTask(driverTask.id, args)}
       />,
-    );
-    setCurrOverlayMenuItems((menuItems) => [
-      ...menuItems,
-      <Button
-        onClick={() => performTaskDeletion(driverTask)}
-        label="Delete"
-      ></Button>,
-    ]);
-  }
-
-  function performTaskDeletion(driverTask: DriverTask) {
-    closeOverlay();
-    setCurrOverlay(
-      <Confirm
-        label="Are you sure you want to delete this task? It cannot be undone."
-        yesFunc={() => deleteTask(selectedDriverTaskID)}
-        noFunc={() => performTaskEdit(driverTask)}
-      ></Confirm>,
+      [
+        <Button
+          onClick={() => {
+            openOverlay(
+              <Confirm
+                label="Are you sure you want to delete this task? It cannot be undone."
+                yesFunc={() => deleteTask(driverTask.id)}
+                noFunc={() => performTaskEdit(driverTask)}
+              ></Confirm>,
+            );
+          }}
+          label="Delete"
+        ></Button>,
+      ],
     );
   }
 
@@ -138,36 +154,59 @@ function App() {
       .addTask(args, loggedInUser)
       .then((task) => {
         displayNotification('Adding successful');
-        setTasks(tasks.concat(task));
+        reloadTasks();
       })
       .catch((err: ServiceError) => {
         displayNotification(err.message);
+        if (err.type === ServiceErrorType.TASK_CONFLICT) {
+          openOverlay(
+            <TaskConflict
+              retryTask={() => addNewTask(args)}
+              deleteTask={deleteTask}
+              conflictingTasks={(err as ConflictServiceError).conflictingTasks}
+            />,
+          );
+        }
       });
     closeOverlay();
   }
 
-  function updateTask(args: DriverTaskInput) {
+  function updateTask(driverTaskID: number, args: DriverTaskInput) {
     driverTaskService
-      .updateTask(selectedDriverTaskID, args, loggedInUser)
+      .updateTask(driverTaskID, args, loggedInUser)
       .then((res) => {
         displayNotification('Updating successful');
+        reloadTasks();
       })
       .catch((err) => {
         displayNotification(err.message);
+        if (err.type === ServiceErrorType.TASK_CONFLICT) {
+          openOverlay(
+            <TaskConflict
+              retryTask={() => updateTask(driverTaskID, args)}
+              deleteTask={deleteTask}
+              conflictingTasks={(err as ConflictServiceError).conflictingTasks}
+            />,
+          );
+        }
       });
     closeOverlay();
   }
 
-  function deleteTask(driverTaskId: number) {
+  function deleteTask(
+    driverTaskId: number,
+    shouldOverlayClose: boolean = true,
+  ) {
     driverTaskService
       .deleteTask(driverTaskId, loggedInUser)
       .then((res) => {
         displayNotification('Deleting successful');
+        reloadTasks();
       })
       .catch((err) => {
         displayNotification(err.message);
       });
-    closeOverlay();
+    if (shouldOverlayClose) closeOverlay();
   }
 
   function populateDriverOptions() {
@@ -215,7 +254,7 @@ function App() {
         }}
       >
         <Button
-          onClick={() => setCurrOverlay(addTaskElem)}
+          onClick={() => openOverlay(addTaskElem)}
           label="Create"
         ></Button>
         <Button label="Download"></Button>
@@ -252,21 +291,24 @@ function App() {
             flex: 2,
           }}
         >
-          <button
+          <Button
             onClick={() => setSelectedWeek(getClampedWeek(selectedWeek - 1))}
-          >
-            {'<-'}
-          </button>
+            label="<-"
+          />
           <span>{` Week ${selectedWeek} `}</span>
-          <button
+          <Button
             onClick={() => setSelectedWeek(getClampedWeek(selectedWeek + 1))}
-          >
-            {'->'}
-          </button>
+            label="->"
+          />
         </div>
       </div>
       <AppContext.Provider
-        value={{ displayNotification, closeOverlay, performTaskEdit }}
+        value={{
+          displayNotification,
+          openOverlay,
+          closeOverlay,
+          performTaskEdit,
+        }}
       >
         <Calendar tasks={tasks} />
         <div
