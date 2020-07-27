@@ -4,7 +4,7 @@ import IdGenerator from '../gen/IdGenerator';
 import {
   StubbedClass,
   createSinonStubInstance,
-} from '../../../test/test_helper';
+} from '../../../test/util/stub_class';
 import DriverTask from '../model/DriverTask';
 import { DriverTaskType } from '../type/DriverTaskType';
 import { DriverTaskInput } from '../input/DriverTaskInput';

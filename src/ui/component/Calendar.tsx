@@ -4,7 +4,7 @@ import DriverTask from '../../domain/model/DriverTask';
 import { createHoursArr, hoursToTimeString } from '../../util/time_util';
 import CalendarColumn from './CalendarColumn';
 import CalendarHeader from './CalendarHeader';
-import { AppContext } from '../../App';
+import { AppContext } from '../context/AppContext';
 
 interface IProps {
   tasks: DriverTask[];

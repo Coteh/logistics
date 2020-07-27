@@ -9,9 +9,18 @@ import DriverTaskValidator, {
 } from '../validator/DriverTaskValidator';
 import ServiceError, { ServiceErrorType } from './ServiceError';
 
+/**
+ * Describes a service error that occurred due to task scheduling conflict
+ */
 export class ConflictServiceError extends ServiceError {
   public conflictingTasks: DriverTask[];
 
+  /**
+   * Constructs a conflict service error
+   * @param message message of error
+   * @param type type of error
+   * @param conflictingTasks tasks that conflicted
+   */
   constructor(
     message: string,
     type: ServiceErrorType,
@@ -94,6 +103,11 @@ export default class DriverTaskService {
     }
   }
 
+  /**
+   * Adds a new task
+   * @param args input for new driver task
+   * @param user user performing action
+   */
   public async addTask(args: DriverTaskInput, user: User): Promise<DriverTask> {
     // Ensure user has role to update task
     await this.checkModifyPermissions(user);
@@ -106,6 +120,12 @@ export default class DriverTaskService {
     return driverTask;
   }
 
+  /**
+   * Updates a driver task
+   * @param id id of driver task to update
+   * @param args input for updated driver task
+   * @param user user performing action
+   */
   public async updateTask(
     id: number,
     args: DriverTaskInput,
@@ -128,6 +148,11 @@ export default class DriverTaskService {
     return driverTask;
   }
 
+  /**
+   * Deletes a driver task
+   * @param id id of driver task to delete
+   * @param user user performing action
+   */
   public async deleteTask(id: number, user: User): Promise<void> {
     // Ensure user has role to delete task
     await this.checkModifyPermissions(user);
@@ -135,6 +160,12 @@ export default class DriverTaskService {
     this.driverTaskRepo.delete(id);
   }
 
+  /**
+   * Gets a given driver's tasks for a specified week
+   * @param userID id of user to collect tasks for
+   * @param week week to collect tasks for
+   * @param user user performing action
+   */
   public async getWeeklyUserTasks(
     userID: number,
     week: number,

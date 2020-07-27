@@ -17,3 +17,7 @@ export function createHoursArr(): number[] {
     return index + 1;
   });
 }
+
+export function getClampedWeek(week: number) {
+  return ((((week - 1) % 52) + 52) % 52) + 1;
+}

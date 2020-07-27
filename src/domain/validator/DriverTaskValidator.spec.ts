@@ -3,7 +3,7 @@ import { DriverTaskRepository } from '../repository/DriverTaskRepository';
 import {
   StubbedClass,
   createSinonStubInstance,
-} from '../../../test/test_helper';
+} from '../../../test/util/stub_class';
 import DriverTaskValidator, {
   DriverTaskValidationResult,
 } from './DriverTaskValidator';

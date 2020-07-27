@@ -5,7 +5,7 @@ import { DriverTaskRepository } from '../repository/DriverTaskRepository';
 import {
   createSinonStubInstance,
   StubbedClass,
-} from '../../../test/test_helper';
+} from '../../../test/util/stub_class';
 import DriverTask from '../model/DriverTask';
 import { DriverTaskType } from '../type/DriverTaskType';
 import User from '../model/User';

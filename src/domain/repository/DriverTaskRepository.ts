@@ -18,6 +18,10 @@ interface DriverTaskIntervalQuery {
  * Repository for driver tasks with additional methods to retrieve weekly and interval tasks.
  */
 export class DriverTaskRepository extends Repository<DriverTask> {
+  /**
+   * Gets weekly driver tasks for a given user
+   * @param query driver task week query
+   */
   public getWeeklyTasksByUserID(query: DriverTaskWeekQuery): DriverTask[] {
     return Array.from(this.storage.values()).filter((task) => {
       return (
@@ -29,6 +33,10 @@ export class DriverTaskRepository extends Repository<DriverTask> {
     });
   }
 
+  /**
+   * Gets driver tasks from a given day range for a specified user
+   * @param query driver task interval query
+   */
   public getTaskIntervalByUserID(query: DriverTaskIntervalQuery): DriverTask[] {
     return Array.from(this.storage.values()).filter((task) => {
       return (

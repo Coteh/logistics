@@ -1,6 +1,6 @@
 import React, { useContext, Fragment } from 'react';
 import Button from './Button';
-import { AppContext } from '../../App';
+import { AppContext } from '../context/AppContext';
 
 interface IProps {
   container: JSX.Element;

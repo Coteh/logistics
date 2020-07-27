@@ -1,5 +1,5 @@
 import 'jest';
-import { hoursToTimeString, createHoursArr } from './time_util';
+import { hoursToTimeString, createHoursArr, getClampedWeek } from './time_util';
 
 describe('time_util', () => {
   describe('hoursToTimeString', () => {
@@ -21,6 +21,29 @@ describe('time_util', () => {
       expect(createHoursArr()).toEqual(
         new Array(24).fill(0).map((_, i) => i + 1),
       );
+    });
+  });
+  describe('getClampedWeek', () => {
+    it('should return any week between 1 and 52', () => {
+      expect(getClampedWeek(4)).toEqual(4);
+    });
+    it('should return week 1', () => {
+      expect(getClampedWeek(1)).toEqual(1);
+    });
+    it('should return week 52', () => {
+      expect(getClampedWeek(52)).toEqual(52);
+    });
+    it('should return week 52 if input is 0', () => {
+      expect(getClampedWeek(0)).toEqual(52);
+    });
+    it('should return week 1 if input is 53', () => {
+      expect(getClampedWeek(53)).toEqual(1);
+    });
+    it('should clamp to higher weeks if input is less than 1', () => {
+      expect(getClampedWeek(-4)).toEqual(48);
+    });
+    it('should clamp to lower weeks if input is greater than 52', () => {
+      expect(getClampedWeek(57)).toEqual(5);
     });
   });
 });

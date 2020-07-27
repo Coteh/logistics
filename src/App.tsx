@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Context, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Calendar from './ui/component/Calendar';
 import DriverTaskService, {
@@ -20,6 +20,10 @@ import Button from './ui/component/Button';
 import Confirm from './ui/section/Confirm';
 import { getNumberInputFromString } from './util/input_util';
 import TaskConflict from './ui/section/TaskConflict';
+import { getClampedWeek } from './util/time_util';
+import { AppContext } from './ui/context/AppContext';
+import CSVExportService from './domain/service/CSVExportService';
+import { CSVCreator } from './domain/csv/CSVCreator';
 
 const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
@@ -27,27 +31,17 @@ const driverTaskService: DriverTaskService = new DriverTaskService(
   driverTaskRepo,
   new DriverTaskValidator(driverTaskRepo),
 );
+const csvCreator = new CSVCreator();
+const csvExportService: CSVExportService = new CSVExportService(
+  csvCreator,
+  driverTaskRepo,
+);
 
 const driverUsers = [
   new User(2, UserType.DRIVER, 'John Smith'),
   new User(3, UserType.DRIVER, 'Fierce Bob'),
   new User(4, UserType.DRIVER, 'Jane Doe'),
 ];
-
-function getClampedWeek(week: number) {
-  return ((((week - 1) % 52) + 52) % 52) + 1;
-}
-
-type AppContextType = {
-  displayNotification: Function;
-  openOverlay: Function;
-  closeOverlay: Function;
-  performTaskEdit: Function;
-};
-
-export const AppContext: Context<AppContextType> = createContext(
-  {} as AppContextType,
-);
 
 function App() {
   const [loggedInUser] = useState(new User(1, UserType.DISPATCHER));
@@ -209,6 +203,19 @@ function App() {
     if (shouldOverlayClose) closeOverlay();
   }
 
+  function downloadReport(userID: number, dayInterval: number) {
+    csvExportService
+      .exportToCSV(userID, dayInterval, loggedInUser)
+      .then((blob) => {
+        let url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) => {
+        displayNotification(err.message);
+      });
+  }
+
   function populateDriverOptions() {
     return (
       <>
@@ -240,13 +247,13 @@ function App() {
         }
       })()}
       <header className="App-header">
-        <h1
+        <h2
           style={{
             color: 'lightgrey',
           }}
         >
           logistics
-        </h1>
+        </h2>
       </header>
       <div
         style={{
@@ -257,7 +264,10 @@ function App() {
           onClick={() => openOverlay(addTaskElem)}
           label="Create"
         ></Button>
-        <Button label="Download"></Button>
+        <Button
+          onClick={() => downloadReport(selectedUserID, 2)}
+          label="Download"
+        ></Button>
       </div>
       <div
         style={{

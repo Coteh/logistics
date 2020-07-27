@@ -10,7 +10,7 @@ import EditDriverTask from './EditDriverTask';
 import { hoursToTimeString } from '../../util/time_util';
 import { DriverTaskInput } from '../../domain/input/DriverTaskInput';
 import { DriverTaskType } from '../../domain/type/DriverTaskType';
-import { AppContext } from '../../App';
+import { AppContext } from '../context/AppContext';
 
 describe('EditDriverTask', () => {
   it('should render without crash', () => {
