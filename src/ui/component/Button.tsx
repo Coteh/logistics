@@ -12,6 +12,7 @@ export default function Button(props: IProps) {
   return (
     <button
       style={{
+        margin: '8px',
         padding: '9px',
         backgroundColor: '#2ca675',
         border: '1px solid #2ca675',

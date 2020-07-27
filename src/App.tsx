@@ -1,22 +1,23 @@
 import React, { useState, useEffect, Context, createContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Calendar from './component/Calendar';
-import DriverTaskService from './service/DriverTaskService';
-import DriverTaskFactory from './factory/DriverTaskFactory';
-import IdGenerator from './gen/IdGenerator';
-import { DriverTaskRepository } from './repository/DriverTaskRepository';
-import User from './model/User';
-import { UserType } from './type/UserType';
-import Overlay from './component/Overlay';
-import EditDriverTask from './section/EditDriverTask';
-import { DriverTaskInput } from './input/DriverTaskInput';
-import DriverTask from './model/DriverTask';
-import ServiceError from './service/ServiceError';
-import DriverTaskValidator from './validator/DriverTaskValidator';
-import Notification from './component/Notification';
-import Button from './component/Button';
-import Confirm from './section/Confirm';
+import Calendar from './ui/component/Calendar';
+import DriverTaskService from './domain/service/DriverTaskService';
+import DriverTaskFactory from './domain/factory/DriverTaskFactory';
+import IdGenerator from './domain/gen/IdGenerator';
+import { DriverTaskRepository } from './domain/repository/DriverTaskRepository';
+import User from './domain/model/User';
+import { UserType } from './domain/type/UserType';
+import Overlay from './ui/component/Overlay';
+import EditDriverTask from './ui/section/EditDriverTask';
+import { DriverTaskInput } from './domain/input/DriverTaskInput';
+import DriverTask from './domain/model/DriverTask';
+import ServiceError from './domain/service/ServiceError';
+import DriverTaskValidator from './domain/validator/DriverTaskValidator';
+import Notification from './ui/component/Notification';
+import Button from './ui/component/Button';
+import Confirm from './ui/section/Confirm';
+import { getNumberInputFromString } from './util/input_util';
 
 const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
@@ -200,7 +201,13 @@ function App() {
         }
       })()}
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <h1
+          style={{
+            color: 'lightgrey',
+          }}
+        >
+          logistics
+        </h1>
       </header>
       <div
         style={{
@@ -216,15 +223,35 @@ function App() {
       <div
         style={{
           display: 'flex',
+          padding: '8px',
         }}
       >
-        <div>
-          <span>Driver</span>
-          <select onChange={(e) => setSelectedUserID(parseInt(e.target.value))}>
+        <div
+          style={{
+            padding: '0 8px',
+          }}
+        >
+          <span
+            style={{
+              padding: '0 8px',
+            }}
+          >
+            Driver
+          </span>
+          <select
+            onChange={(e) =>
+              setSelectedUserID(getNumberInputFromString(e.target.value))
+            }
+          >
             {populateDriverOptions()}
           </select>
         </div>
-        <div>
+        <div
+          style={{
+            padding: '0 8px',
+            flex: 2,
+          }}
+        >
           <button
             onClick={() => setSelectedWeek(getClampedWeek(selectedWeek - 1))}
           >

@@ -1,9 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { hoursToTimeString } from '../util/time_util';
-import { DriverTaskInput } from '../input/DriverTaskInput';
-import { DriverTaskType, driverTaskString } from '../type/DriverTaskType';
-import { AppContext } from '../App';
+import { hoursToTimeString } from '../../util/time_util';
+import { DriverTaskInput } from '../../domain/input/DriverTaskInput';
+import {
+  DriverTaskType,
+  driverTaskString,
+} from '../../domain/type/DriverTaskType';
+import { AppContext } from '../../App';
 import Button from '../component/Button';
+import { getNumberInputFromString } from '../../util/input_util';
 
 interface IProps {
   label: string;
@@ -152,8 +156,11 @@ export default function EditDriverTask(props: IProps) {
               <td>
                 <select
                   name="task-type"
+                  data-testid="task-type"
                   value={taskType}
-                  onChange={(e) => setTaskType(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setTaskType(getNumberInputFromString(e.target.value))
+                  }
                 >
                   <option value="">Please select an option</option>
                   <option value={DriverTaskType.PICKUP}>
@@ -175,8 +182,11 @@ export default function EditDriverTask(props: IProps) {
               <td>
                 <select
                   name="start-time"
+                  data-testid="start-time"
                   value={startTime}
-                  onChange={(e) => setStartTime(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setStartTime(getNumberInputFromString(e.target.value))
+                  }
                 >
                   {populateDiscreteTimeOptions()}
                 </select>
@@ -189,8 +199,11 @@ export default function EditDriverTask(props: IProps) {
               <td>
                 <select
                   name="end-time"
+                  data-testid="end-time"
                   value={endTime}
-                  onChange={(e) => setEndTime(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setEndTime(getNumberInputFromString(e.target.value))
+                  }
                 >
                   {populateDiscreteTimeOptions()}
                 </select>
@@ -203,8 +216,11 @@ export default function EditDriverTask(props: IProps) {
               <td>
                 <select
                   name="week"
+                  data-testid="week"
                   value={week}
-                  onChange={(e) => setWeek(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setWeek(getNumberInputFromString(e.target.value))
+                  }
                 >
                   {populateDiscreteWeekOptions()}
                 </select>
@@ -217,8 +233,11 @@ export default function EditDriverTask(props: IProps) {
               <td>
                 <select
                   name="day"
+                  data-testid="day"
                   value={day}
-                  onChange={(e) => setDay(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setDay(getNumberInputFromString(e.target.value))
+                  }
                 >
                   {populateDiscreteDayOptions()}
                 </select>
@@ -231,6 +250,7 @@ export default function EditDriverTask(props: IProps) {
               <td>
                 <input
                   name="location"
+                  data-testid="location"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                 ></input>

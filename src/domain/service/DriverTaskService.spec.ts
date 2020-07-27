@@ -2,7 +2,10 @@ import 'jest';
 import DriverTaskService, { ConflictServiceError } from './DriverTaskService';
 import DriverTaskFactory from '../factory/DriverTaskFactory';
 import { DriverTaskRepository } from '../repository/DriverTaskRepository';
-import { createSinonStubInstance, StubbedClass } from '../../test/test_helper';
+import {
+  createSinonStubInstance,
+  StubbedClass,
+} from '../../../test/test_helper';
 import DriverTask from '../model/DriverTask';
 import { DriverTaskType } from '../type/DriverTaskType';
 import User from '../model/User';

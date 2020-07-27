@@ -1,7 +1,10 @@
 import 'jest';
 import DriverTaskFactory from './DriverTaskFactory';
 import IdGenerator from '../gen/IdGenerator';
-import { StubbedClass, createSinonStubInstance } from '../../test/test_helper';
+import {
+  StubbedClass,
+  createSinonStubInstance,
+} from '../../../test/test_helper';
 import DriverTask from '../model/DriverTask';
 import { DriverTaskType } from '../type/DriverTaskType';
 import { DriverTaskInput } from '../input/DriverTaskInput';

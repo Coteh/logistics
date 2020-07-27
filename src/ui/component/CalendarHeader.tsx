@@ -22,7 +22,9 @@ export default function CalendarHeader(props: IProps) {
         position: 'relative',
       }}
     >
-      <div style={cellStyle}>{header}</div>
+      <div data-testid="cell" style={cellStyle}>
+        {header}
+      </div>
     </div>
   );
 }

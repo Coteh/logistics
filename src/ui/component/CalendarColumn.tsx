@@ -23,7 +23,7 @@ export default function CalendarColumn(props: IProps) {
       }}
     >
       {rows?.map((row, i) => (
-        <div style={cellStyle} key={i}>
+        <div data-testid="cell" style={cellStyle} key={i}>
           {row}
         </div>
       ))}

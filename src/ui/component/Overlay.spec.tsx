@@ -8,9 +8,11 @@ describe('Overlay', () => {
     render(<Overlay container={<></>} />);
   });
   it('can render an inner component without crash', () => {
-    throw new Error('Not implemented');
+    let innerComponent = <div>Something</div>;
+    render(<Overlay container={innerComponent} />);
   });
   it('can render context menu items', () => {
-    throw new Error('Not implemented');
+    let menuItems = [<div>Something</div>];
+    render(<Overlay container={<></>} contextMenuItems={menuItems} />);
   });
 });

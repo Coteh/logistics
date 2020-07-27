@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { driverTaskString } from '../type/DriverTaskType';
-import DriverTask from '../model/DriverTask';
-import { createHoursArr, hoursToTimeString } from '../util/time_util';
+import { driverTaskString } from '../../domain/type/DriverTaskType';
+import DriverTask from '../../domain/model/DriverTask';
+import { createHoursArr, hoursToTimeString } from '../../util/time_util';
 import CalendarColumn from './CalendarColumn';
 import CalendarHeader from './CalendarHeader';
-import { AppContext } from '../App';
+import { AppContext } from '../../App';
 
 interface IProps {
   tasks: DriverTask[];
