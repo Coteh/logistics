@@ -2,6 +2,10 @@ import User from '../model/User';
 import { CSVCreator } from '../csv/CSVCreator';
 import { DriverTaskRepository } from '../repository/DriverTaskRepository';
 import { DriverTaskType } from '../type/DriverTaskType';
+import ServiceError, { ServiceErrorType } from './ServiceError';
+import { UserType } from '../type/UserType';
+
+const VALID_DAY_INTERVALS = [2, 4, 7, 14, 28];
 
 /**
  * Service for exporting drivers' tasks to CSV
@@ -20,6 +24,15 @@ export default class CSVExportService {
     this.driverTaskRepo = driverTaskRepo;
   }
 
+  private async checkExportPermissions(user: User) {
+    if (user.type !== UserType.DISPATCHER) {
+      throw new ServiceError(
+        'User does not have permission to export these tasks',
+        ServiceErrorType.INSUFFICIENT_PERMISSIONS,
+      );
+    }
+  }
+
   /**
    * Exports driver task data to CSV as a blob
    * @param userID id of user to export data for
@@ -31,7 +44,17 @@ export default class CSVExportService {
     dayInterval: number,
     user: User,
   ): Promise<Blob> {
-    let numRows: number = Math.floor(365 / dayInterval);
+    // Ensure user has permission to export
+    await this.checkExportPermissions(user);
+    // Ensure day interval is valid
+    if (!VALID_DAY_INTERVALS.includes(dayInterval)) {
+      throw new ServiceError(
+        'Invalid day interval',
+        ServiceErrorType.INVALID_DAY_INTERVAL,
+      );
+    }
+    // Perform export
+    let numRows: number = 364 / dayInterval;
     let data: any[][] = new Array(numRows);
 
     for (let i = 0; i < numRows; i++) {
@@ -55,9 +78,16 @@ export default class CSVExportService {
       ).length;
     }
 
-    return this.csvCreator.createCSVBlob(
-      ['Time-Frame', 'Pickup', 'Drop-off', 'Other'],
-      data,
-    );
+    try {
+      return this.csvCreator.createCSVBlob(
+        ['Time-Frame', 'Pickup', 'Drop-off', 'Other'],
+        data,
+      );
+    } catch (e) {
+      throw new ServiceError(
+        'Error exporting CSV',
+        ServiceErrorType.COULD_NOT_EXPORT,
+      );
+    }
   }
 }

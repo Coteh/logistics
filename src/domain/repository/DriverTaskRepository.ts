@@ -39,10 +39,11 @@ export class DriverTaskRepository extends Repository<DriverTask> {
    */
   public getTaskIntervalByUserID(query: DriverTaskIntervalQuery): DriverTask[] {
     return Array.from(this.storage.values()).filter((task) => {
+      let day: number = (task.week - 1) * 7 + task.day;
       return (
         task.userID === query.userID &&
-        task.day >= query.startDay &&
-        task.day <= query.endDay
+        day >= query.startDay &&
+        day <= query.endDay
       );
     });
   }

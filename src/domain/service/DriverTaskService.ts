@@ -91,7 +91,7 @@ export default class DriverTaskService {
     if (result.invalid) {
       throw new ServiceError(
         'New task has invalid start and/or end time',
-        ServiceErrorType.INVALID_TIME_SLOT,
+        ServiceErrorType.INVALID_TIME_UNIT,
       );
     }
     if (result.conflict) {
@@ -136,7 +136,15 @@ export default class DriverTaskService {
     // Ensure task is valid (ie. does not conflict with any other task)
     await this.checkTaskValidity(args, [id]);
     // Perform update action
-    let driverTask = this.driverTaskRepo.get(id);
+    let driverTask: DriverTask;
+    try {
+      driverTask = this.driverTaskRepo.get(id);
+    } catch (e) {
+      throw new ServiceError(
+        `Could not find entry of id '${id}'`,
+        ServiceErrorType.ENTRY_NOT_FOUND,
+      );
+    }
     driverTask.type = args.type;
     driverTask.start = args.start;
     driverTask.end = args.end;
@@ -157,7 +165,14 @@ export default class DriverTaskService {
     // Ensure user has role to delete task
     await this.checkModifyPermissions(user);
     // Perform delete action
-    this.driverTaskRepo.delete(id);
+    try {
+      this.driverTaskRepo.delete(id);
+    } catch (e) {
+      throw new ServiceError(
+        `Could not find entry of id '${id}'`,
+        ServiceErrorType.ENTRY_NOT_FOUND,
+      );
+    }
   }
 
   /**

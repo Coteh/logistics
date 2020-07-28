@@ -175,7 +175,7 @@ describe('DriverTaskService', () => {
           fail('User added a conflicting task');
         })
         .catch((err: ServiceError) => {
-          expect(err.type).toEqual(ServiceErrorType.INVALID_TIME_SLOT);
+          expect(err.type).toEqual(ServiceErrorType.INVALID_TIME_UNIT);
         });
     });
     it('will refuse to add a driver task if user does not have dispatcher permissions', () => {
@@ -408,7 +408,7 @@ describe('DriverTaskService', () => {
           fail('User updated a task with invalid time');
         })
         .catch((err: ConflictServiceError) => {
-          expect(err.type).toEqual(ServiceErrorType.INVALID_TIME_SLOT);
+          expect(err.type).toEqual(ServiceErrorType.INVALID_TIME_UNIT);
         });
     });
     it('will refuse to update a driver task if user does not have dispatcher permissions', () => {
@@ -433,7 +433,12 @@ describe('DriverTaskService', () => {
           expect(err.type).toEqual(ServiceErrorType.INSUFFICIENT_PERMISSIONS);
         });
     });
-    it('will throw an error if updating a driver task that does not exist', async () => {
+    it('will throw a service error if updating a driver task that does not exist', async () => {
+      mockValidator.validateTaskEntry.returns({
+        conflict: false,
+        invalid: false,
+      });
+
       await expect(
         service.updateTask(
           1,
@@ -448,7 +453,34 @@ describe('DriverTaskService', () => {
           },
           new User(1, UserType.DISPATCHER),
         ),
-      ).rejects.toThrow();
+      ).rejects.toThrow(ServiceError);
+    });
+    it('will report entry not found error if updating a driver task that does not exist', () => {
+      mockValidator.validateTaskEntry.returns({
+        conflict: false,
+        invalid: false,
+      });
+
+      return service
+        .updateTask(
+          1,
+          {
+            type: DriverTaskType.OTHER,
+            start: 5,
+            end: 6,
+            week: 2,
+            day: 2,
+            location: 'Guelph',
+            userID: 2,
+          },
+          new User(1, UserType.DISPATCHER),
+        )
+        .then(() => {
+          fail('Updated a nonexistent task');
+        })
+        .catch((err: ServiceError) => {
+          expect(err.type).toEqual(ServiceErrorType.ENTRY_NOT_FOUND);
+        });
     });
   });
   describe('deleteTask', () => {
@@ -487,10 +519,20 @@ describe('DriverTaskService', () => {
           expect(err.type).toEqual(ServiceErrorType.INSUFFICIENT_PERMISSIONS);
         });
     });
-    it('will throw an error if task of specified id does not exist', async () => {
+    it('will throw a service error if task of specified id does not exist', async () => {
       await expect(
         service.deleteTask(1, new User(1, UserType.DISPATCHER)),
-      ).rejects.toThrow();
+      ).rejects.toThrow(ServiceError);
+    });
+    it('will report entry not found error if task of specified id does not exist', () => {
+      return service
+        .deleteTask(1, new User(1, UserType.DISPATCHER))
+        .then(() => {
+          fail('User deleted nonexistent task');
+        })
+        .catch((err: ServiceError) => {
+          expect(err.type).toEqual(ServiceErrorType.ENTRY_NOT_FOUND);
+        });
     });
   });
   describe('getWeeklyUserTasks', () => {
