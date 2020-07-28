@@ -294,6 +294,9 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(notificationStub).toHaveBeenLastCalledWith(
+      expect.stringContaining('type'),
+    );
     expect(submitStub).not.toHaveBeenCalled();
   });
   it('should prevent submission and notify user about invalid start time', () => {
@@ -348,6 +351,9 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(notificationStub).toHaveBeenLastCalledWith(
+      expect.stringContaining('start time'),
+    );
     expect(submitStub).not.toHaveBeenCalled();
   });
   it('should prevent submission and notify user about invalid end time', () => {
@@ -402,6 +408,9 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(notificationStub).toHaveBeenLastCalledWith(
+      expect.stringContaining('end time'),
+    );
     expect(submitStub).not.toHaveBeenCalled();
   });
   it('should prevent submission and notify user about invalid day', () => {
@@ -434,7 +443,7 @@ describe('EditDriverTask', () => {
     });
     fireEvent.change(getByTestId('end-time'), {
       target: {
-        value: '1',
+        value: '3',
       },
     });
     fireEvent.change(getByTestId('day'), {
@@ -456,6 +465,9 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(notificationStub).toHaveBeenLastCalledWith(
+      expect.stringContaining('day'),
+    );
     expect(submitStub).not.toHaveBeenCalled();
   });
   it('should prevent submission and notify user about invalid week', () => {
@@ -488,7 +500,7 @@ describe('EditDriverTask', () => {
     });
     fireEvent.change(getByTestId('end-time'), {
       target: {
-        value: '1',
+        value: '3',
       },
     });
     fireEvent.change(getByTestId('day'), {
@@ -510,6 +522,9 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(notificationStub).toHaveBeenLastCalledWith(
+      expect.stringContaining('week'),
+    );
     expect(submitStub).not.toHaveBeenCalled();
   });
   it('should prevent submission and notify user about invalid location', () => {
@@ -542,7 +557,7 @@ describe('EditDriverTask', () => {
     });
     fireEvent.change(getByTestId('end-time'), {
       target: {
-        value: '1',
+        value: '3',
       },
     });
     fireEvent.change(getByTestId('day'), {
@@ -564,6 +579,9 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(notificationStub).toHaveBeenLastCalledWith(
+      expect.stringContaining('location'),
+    );
     expect(submitStub).not.toHaveBeenCalled();
   });
   it('should prevent submission and notify user about start time and end time being the same', () => {
@@ -618,6 +636,9 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(notificationStub).toHaveBeenLastCalledWith(
+      expect.stringContaining('time'),
+    );
     expect(submitStub).not.toHaveBeenCalled();
   });
   it('should prevent submission and notify user about start time occurring after end time', () => {
@@ -672,6 +693,9 @@ describe('EditDriverTask', () => {
     fireEvent.click(getByText('Submit'));
 
     expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(notificationStub).toHaveBeenLastCalledWith(
+      expect.stringContaining('time'),
+    );
     expect(submitStub).not.toHaveBeenCalled();
   });
 });
