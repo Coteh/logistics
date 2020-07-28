@@ -512,6 +512,60 @@ describe('EditDriverTask', () => {
     expect(notificationStub).toHaveBeenCalledTimes(1);
     expect(submitStub).not.toHaveBeenCalled();
   });
+  it('should prevent submission and notify user about invalid location', () => {
+    const submitStub = jest.fn();
+    const notificationStub = jest.fn();
+    const { getByTestId, getByText } = render(
+      <AppContext.Provider
+        value={{
+          displayNotification: notificationStub,
+          openOverlay: () => {},
+          closeOverlay: () => {},
+          performTaskEdit: () => {},
+        }}
+      >
+        <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
+      </AppContext.Provider>,
+    );
+
+    expect(notificationStub).not.toHaveBeenCalled();
+
+    fireEvent.change(getByTestId('task-type'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('start-time'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('end-time'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('day'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('week'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('location'), {
+      target: {
+        value: '',
+      },
+    });
+
+    fireEvent.click(getByText('Submit'));
+
+    expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(submitStub).not.toHaveBeenCalled();
+  });
   it('should prevent submission and notify user about start time and end time being the same', () => {
     const submitStub = jest.fn();
     const notificationStub = jest.fn();
