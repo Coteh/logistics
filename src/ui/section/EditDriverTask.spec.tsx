@@ -23,6 +23,7 @@ describe('EditDriverTask', () => {
 
     const select = getByTestId('task-type');
     const options = getAllByRole(select, 'option');
+    expect(options).toHaveLength(4);
     getByText(options[1], 'Pickup Goods');
     getByText(options[2], 'Deliver Goods');
     getByText(options[3], 'Other');
@@ -34,6 +35,7 @@ describe('EditDriverTask', () => {
 
     const select = getByTestId('start-time');
     const options = getAllByRole(select, 'option');
+    expect(options).toHaveLength(25);
     for (let i = 0; i < 24; i++) {
       getByText(options[i + 1], hoursToTimeString(i + 1));
     }
@@ -45,6 +47,7 @@ describe('EditDriverTask', () => {
 
     const select = getByTestId('end-time');
     const options = getAllByRole(select, 'option');
+    expect(options).toHaveLength(25);
     for (let i = 0; i < 24; i++) {
       getByText(options[i + 1], hoursToTimeString(i + 1));
     }
@@ -56,6 +59,7 @@ describe('EditDriverTask', () => {
 
     const select = getByTestId('day');
     const options = getAllByRole(select, 'option');
+    expect(options).toHaveLength(8);
     getByText(options[1], 'Sunday');
     getByText(options[2], 'Monday');
     getByText(options[3], 'Tuesday');
@@ -71,6 +75,7 @@ describe('EditDriverTask', () => {
 
     const select = getByTestId('week');
     const options = getAllByRole(select, 'option');
+    expect(options).toHaveLength(53);
     for (let i = 0; i < 52; i++) {
       getByText(options[i + 1], (i + 1).toString());
     }

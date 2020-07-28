@@ -24,6 +24,7 @@ import { getClampedWeek } from './util/time_util';
 import { AppContext } from './ui/context/AppContext';
 import CSVExportService from './domain/service/CSVExportService';
 import { CSVCreator } from './domain/csv/CSVCreator';
+import DownloadToFile from './ui/section/DownloadToFile';
 
 const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
@@ -143,10 +144,22 @@ function App() {
     );
   }
 
+  function performDownload(userID: number) {
+    openOverlay(
+      <DownloadToFile
+        userID={userID}
+        defaultInterval={2}
+        submitFunc={(userID: number, interval: number) =>
+          downloadReport(userID, interval)
+        }
+      />,
+    );
+  }
+
   function addNewTask(args: DriverTaskInput) {
     driverTaskService
       .addTask(args, loggedInUser)
-      .then((task) => {
+      .then(() => {
         displayNotification('Adding successful');
         reloadTasks();
       })
@@ -168,7 +181,7 @@ function App() {
   function updateTask(driverTaskID: number, args: DriverTaskInput) {
     driverTaskService
       .updateTask(driverTaskID, args, loggedInUser)
-      .then((res) => {
+      .then(() => {
         displayNotification('Updating successful');
         reloadTasks();
       })
@@ -193,7 +206,7 @@ function App() {
   ) {
     driverTaskService
       .deleteTask(driverTaskId, loggedInUser)
-      .then((res) => {
+      .then(() => {
         displayNotification('Deleting successful');
         reloadTasks();
       })
@@ -265,7 +278,7 @@ function App() {
           label="Create"
         ></Button>
         <Button
-          onClick={() => downloadReport(selectedUserID, 2)}
+          onClick={() => performDownload(selectedUserID)}
           label="Download"
         ></Button>
       </div>
@@ -303,12 +316,12 @@ function App() {
         >
           <Button
             onClick={() => setSelectedWeek(getClampedWeek(selectedWeek - 1))}
-            label="<-"
+            label="←"
           />
           <span>{` Week ${selectedWeek} `}</span>
           <Button
             onClick={() => setSelectedWeek(getClampedWeek(selectedWeek + 1))}
-            label="->"
+            label="→"
           />
         </div>
       </div>

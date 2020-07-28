@@ -61,7 +61,7 @@ export default function Calendar(props: IProps) {
           maxWidth: '100vw',
           padding: padding + 'px',
           display: 'flex',
-          height: '400px',
+          height: '500px',
           overflowY: 'scroll',
           border: '1px solid black',
         }}

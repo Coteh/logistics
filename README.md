@@ -1,44 +1,51 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# logistics
 
-## Available Scripts
+[![CircleCI](https://circleci.com/gh/Coteh/logistics.svg?style=shield)](https://circleci.com/gh/Coteh/logistics)
+[![codecov](https://codecov.io/gh/Coteh/logistics/branch/master/graph/badge.svg)](https://codecov.io/gh/Coteh/logistics)
 
-In the project directory, you can run:
+A React application that tracks driver activities. This is an application written for a [Rose Rocket](https://www.roserocket.com/) coding challenge.
 
-### `yarn start`
+## Setup
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Clone the repository
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```
+git clone https://github.com/Coteh/logistics.git
+```
 
-### `yarn test`
+2. Navigate to project directory, run `yarn install` then `yarn start`, assuming you have [yarn](https://yarnpkg.com/) installed.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Design
 
-### `yarn build`
+### Architecture
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I decided to design this application as a frontend-only application for three reasons:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- Firstly, the requirements stated that persistence and authentication were not required.
+- Secondly, there were no other requirements that needed a backend to fulfill.
+- Lastly, the requirements made a note to "keep any extra installation requirements and external apps/services to a minimum". With no real hard requirement for a backend, and with the limited amount of time for this coding challenge, I decided to opt for only having a frontend.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Despite only having a frontend, I have designed the frontend in such a way that it can be extended to interact with a backend. The domain service methods, for instance, were written with an async interface, which will allow these methods to easily be replaced with network requests without adversely affecting calling code.
 
-### `yarn eject`
+### Tests
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+I developed the application using a TDD (test-driven development) approach. For the two major features of the application (Dispatcher scheduling and Spreadsheet Report), I first wrote failing test cases, each representing a requirement. Then, I implemented the functionality required to pass the tests. Developing features in this manner gave me confidence that the features will work as expected when hooked up to the UI.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Code Formatting
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+I also added [prettier](https://prettier.io/) to my project and added a [husky](https://github.com/typicode/husky) hook to the project which automatically formats code on every commit. I believe that this is an effective way of keeping code clean and consistent throughout the project.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Features
 
-## Learn More
+- Create tasks
+- Update tasks
+- Delete tasks
+- Conflict resolution
+  - Remove conflicting tasks when adding/updating tasks
+- Generate spreadsheet report as downloadable CSV
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+For this demo, the application is controlled as a dispatcher user and tasks for three sample users can be viewed.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Bonus Features
+
+Bonus features and extra improvements are outlined [here](FEATURES.md).
