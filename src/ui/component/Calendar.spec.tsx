@@ -7,7 +7,7 @@ import { DriverTaskType } from '../../domain/type/DriverTaskType';
 
 describe('Calendar', () => {
   it('should render without crash', () => {
-    render(<Calendar tasks={[]} />);
+    render(<Calendar cellWidth={0} cellHeight={0} tasks={[]} />);
   });
   it('should render a driver task', () => {
     let task: DriverTask = {
@@ -21,7 +21,9 @@ describe('Calendar', () => {
       location: 'Toronto',
     };
 
-    const { getByText } = render(<Calendar tasks={[task]} />);
+    const { getByText } = render(
+      <Calendar cellWidth={0} cellHeight={0} tasks={[task]} />,
+    );
 
     getByText('Deliver Goods');
   });

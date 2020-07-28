@@ -115,6 +115,10 @@ export default function EditDriverTask(props: IProps) {
       app.displayNotification('Please select a end time');
       return;
     }
+    if (startTime >= endTime) {
+      app.displayNotification('Start and end times are invalid');
+      return;
+    }
     if (!location) {
       app.displayNotification('Please enter a location');
       return;
@@ -131,10 +135,10 @@ export default function EditDriverTask(props: IProps) {
       type: taskType,
       start: startTime,
       end: endTime,
-      day: day,
-      week: week,
+      day,
+      week,
       userID,
-      location: 'Toronto',
+      location,
     };
     submitFunc(args);
   }

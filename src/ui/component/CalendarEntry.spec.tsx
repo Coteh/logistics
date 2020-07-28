@@ -20,6 +20,10 @@ describe('CalendarEntry', () => {
       <CalendarEntry label="My Entry" startY={0} height={0} onClick={stub} />,
     );
 
+    expect(stub).not.toHaveBeenCalled();
+
     fireEvent.click(getByText('My Entry'));
+
+    expect(stub).toHaveBeenCalledTimes(1);
   });
 });

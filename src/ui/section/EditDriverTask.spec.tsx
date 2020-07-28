@@ -110,7 +110,7 @@ describe('EditDriverTask', () => {
     });
     fireEvent.change(getByTestId('end-time'), {
       target: {
-        value: '1',
+        value: '3',
       },
     });
     fireEvent.change(getByTestId('day'), {
@@ -154,7 +154,7 @@ describe('EditDriverTask', () => {
     });
     fireEvent.change(getByTestId('end-time'), {
       target: {
-        value: '1',
+        value: '3',
       },
     });
     fireEvent.change(getByTestId('day'), {
@@ -169,7 +169,7 @@ describe('EditDriverTask', () => {
     });
     fireEvent.change(getByTestId('location'), {
       target: {
-        value: 'Toronto',
+        value: 'New York',
       },
     });
 
@@ -178,10 +178,10 @@ describe('EditDriverTask', () => {
     const expectedArgs: DriverTaskInput = {
       type: DriverTaskType.PICKUP,
       start: 1,
-      end: 1,
+      end: 3,
       day: 1,
       week: 1,
-      location: 'Toronto',
+      location: 'New York',
       userID: 0,
     };
 
@@ -242,7 +242,7 @@ describe('EditDriverTask', () => {
     expect(notificationStub).toHaveBeenCalled();
     expect(submitStub).toHaveBeenCalledTimes(0);
   });
-  it('should notify user about invalid task type', () => {
+  it('should prevent submission and notify user about invalid task type', () => {
     const submitStub = jest.fn();
     const notificationStub = jest.fn();
     const { getByTestId, getByText } = render(
@@ -296,7 +296,7 @@ describe('EditDriverTask', () => {
     expect(notificationStub).toHaveBeenCalledTimes(1);
     expect(submitStub).not.toHaveBeenCalled();
   });
-  it('should notify user about invalid start time', () => {
+  it('should prevent submission and notify user about invalid start time', () => {
     const submitStub = jest.fn();
     const notificationStub = jest.fn();
     const { getByTestId, getByText } = render(
@@ -350,7 +350,7 @@ describe('EditDriverTask', () => {
     expect(notificationStub).toHaveBeenCalledTimes(1);
     expect(submitStub).not.toHaveBeenCalled();
   });
-  it('should notify user about invalid end time', () => {
+  it('should prevent submission and notify user about invalid end time', () => {
     const submitStub = jest.fn();
     const notificationStub = jest.fn();
     const { getByTestId, getByText } = render(
@@ -404,7 +404,7 @@ describe('EditDriverTask', () => {
     expect(notificationStub).toHaveBeenCalledTimes(1);
     expect(submitStub).not.toHaveBeenCalled();
   });
-  it('should notify user about invalid day', () => {
+  it('should prevent submission and notify user about invalid day', () => {
     const submitStub = jest.fn();
     const notificationStub = jest.fn();
     const { getByTestId, getByText } = render(
@@ -458,7 +458,7 @@ describe('EditDriverTask', () => {
     expect(notificationStub).toHaveBeenCalledTimes(1);
     expect(submitStub).not.toHaveBeenCalled();
   });
-  it('should notify user about invalid week', () => {
+  it('should prevent submission and notify user about invalid week', () => {
     const submitStub = jest.fn();
     const notificationStub = jest.fn();
     const { getByTestId, getByText } = render(
@@ -499,6 +499,114 @@ describe('EditDriverTask', () => {
     fireEvent.change(getByTestId('week'), {
       target: {
         value: '',
+      },
+    });
+    fireEvent.change(getByTestId('location'), {
+      target: {
+        value: 'Toronto',
+      },
+    });
+
+    fireEvent.click(getByText('Submit'));
+
+    expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(submitStub).not.toHaveBeenCalled();
+  });
+  it('should prevent submission and notify user about start time and end time being the same', () => {
+    const submitStub = jest.fn();
+    const notificationStub = jest.fn();
+    const { getByTestId, getByText } = render(
+      <AppContext.Provider
+        value={{
+          displayNotification: notificationStub,
+          openOverlay: () => {},
+          closeOverlay: () => {},
+          performTaskEdit: () => {},
+        }}
+      >
+        <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
+      </AppContext.Provider>,
+    );
+
+    expect(notificationStub).not.toHaveBeenCalled();
+
+    fireEvent.change(getByTestId('task-type'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('start-time'), {
+      target: {
+        value: '5',
+      },
+    });
+    fireEvent.change(getByTestId('end-time'), {
+      target: {
+        value: '5',
+      },
+    });
+    fireEvent.change(getByTestId('day'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('week'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('location'), {
+      target: {
+        value: 'Toronto',
+      },
+    });
+
+    fireEvent.click(getByText('Submit'));
+
+    expect(notificationStub).toHaveBeenCalledTimes(1);
+    expect(submitStub).not.toHaveBeenCalled();
+  });
+  it('should prevent submission and notify user about start time occurring after end time', () => {
+    const submitStub = jest.fn();
+    const notificationStub = jest.fn();
+    const { getByTestId, getByText } = render(
+      <AppContext.Provider
+        value={{
+          displayNotification: notificationStub,
+          openOverlay: () => {},
+          closeOverlay: () => {},
+          performTaskEdit: () => {},
+        }}
+      >
+        <EditDriverTask label="" userID={0} submitFunc={submitStub} />,
+      </AppContext.Provider>,
+    );
+
+    expect(notificationStub).not.toHaveBeenCalled();
+
+    fireEvent.change(getByTestId('task-type'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('start-time'), {
+      target: {
+        value: '8',
+      },
+    });
+    fireEvent.change(getByTestId('end-time'), {
+      target: {
+        value: '5',
+      },
+    });
+    fireEvent.change(getByTestId('day'), {
+      target: {
+        value: '1',
+      },
+    });
+    fireEvent.change(getByTestId('week'), {
+      target: {
+        value: '1',
       },
     });
     fireEvent.change(getByTestId('location'), {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { driverTaskString } from '../../domain/type/DriverTaskType';
 import DriverTask from '../../domain/model/DriverTask';
 import { createHoursArr, hoursToTimeString } from '../../util/time_util';
@@ -8,7 +8,10 @@ import { AppContext } from '../context/AppContext';
 import CalendarEntry from './CalendarEntry';
 
 interface IProps {
+  cellWidth: number;
+  cellHeight: number;
   tasks: DriverTask[];
+  scrollTo?: number;
 }
 
 /**
@@ -27,13 +30,18 @@ export default function Calendar(props: IProps) {
     'Saturday',
   ];
 
-  const cellWidth = 120;
-  const cellHeight = 60;
   const padding = 8;
 
-  const { tasks } = props;
+  const { cellWidth, cellHeight, tasks, scrollTo } = props;
+  const calendarRef = useRef(null);
 
   const app = useContext(AppContext);
+
+  useEffect(() => {
+    if (calendarRef.current) {
+      (calendarRef.current! as HTMLElement).scrollTop = scrollTo || 0;
+    }
+  }, [scrollTo]);
 
   return (
     <>
@@ -62,6 +70,7 @@ export default function Calendar(props: IProps) {
         ))}
       </div>
       <div
+        ref={calendarRef}
         style={{
           maxWidth: '100vw',
           padding: padding + 'px',
@@ -76,9 +85,9 @@ export default function Calendar(props: IProps) {
           cellHeight={cellHeight}
           rows={hoursArr.map((hour) => hoursToTimeString(hour))}
         />
-        {daysArr.map((v, i) => (
+        {daysArr.map((_, i) => (
           <div
-            key={i}
+            key={`col_day_${i}`}
             style={{
               position: 'relative',
             }}
@@ -101,14 +110,13 @@ export default function Calendar(props: IProps) {
                 .filter((task) => task.day === i + 1)
                 .map((task) => {
                   return (
-                    <div key={`task_${task.id}`}>
-                      <CalendarEntry
-                        label={driverTaskString(task.type)}
-                        startY={(cellHeight + 1) * (task.start - 1)}
-                        height={(task.end - task.start) * (cellHeight + 1)}
-                        onClick={() => app.performTaskEdit(task)}
-                      />
-                    </div>
+                    <CalendarEntry
+                      key={`task_${task.id}`}
+                      label={driverTaskString(task.type)}
+                      startY={(cellHeight + 1) * (task.start - 1)}
+                      height={(task.end - task.start) * (cellHeight + 1)}
+                      onClick={() => app.performTaskEdit(task)}
+                    />
                   );
                 })}
             </div>

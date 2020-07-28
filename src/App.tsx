@@ -55,10 +55,14 @@ function App() {
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [tasks, setTasks] = useState<DriverTask[]>([]);
   const [notifications, setNotifications] = useState<string[]>([]);
+  const [calendarScroll, setCalendarScroll] = useState(0);
   const [currOverlay, setCurrOverlay] = useState<JSX.Element | null>(null);
   const [currOverlayMenuItems, setCurrOverlayMenuItems] = useState<
     JSX.Element[]
   >([]);
+
+  const cellWidth = 120;
+  const cellHeight = 60;
 
   const addTaskElem = (
     <EditDriverTask
@@ -79,6 +83,11 @@ function App() {
         console.log(err.message);
       });
   }, [selectedUserID, selectedWeek, loggedInUser]);
+
+  function scrollToTask(task: DriverTask) {
+    setCalendarScroll((cellHeight + 1) * (task.start - 1) - 40);
+    setSelectedWeek(task.week);
+  }
 
   function reloadTasks() {
     driverTaskService
@@ -162,8 +171,9 @@ function App() {
   function addNewTask(args: DriverTaskInput) {
     driverTaskService
       .addTask(args, loggedInUser)
-      .then(() => {
+      .then((task) => {
         displayNotification('Adding successful');
+        scrollToTask(task);
         reloadTasks();
       })
       .catch((err: ServiceError) => {
@@ -184,8 +194,9 @@ function App() {
   function updateTask(driverTaskID: number, args: DriverTaskInput) {
     driverTaskService
       .updateTask(driverTaskID, args, loggedInUser)
-      .then(() => {
+      .then((task) => {
         displayNotification('Updating successful');
+        scrollToTask(task);
         reloadTasks();
       })
       .catch((err) => {
@@ -336,7 +347,12 @@ function App() {
           performTaskEdit,
         }}
       >
-        <Calendar tasks={tasks} />
+        <Calendar
+          cellWidth={cellWidth}
+          cellHeight={cellHeight}
+          tasks={tasks}
+          scrollTo={calendarScroll}
+        />
         <div
           style={{
             position: 'absolute',
