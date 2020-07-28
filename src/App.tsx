@@ -44,6 +44,9 @@ const driverUsers = [
   new User(4, UserType.DRIVER, 'Jane Doe'),
 ];
 
+/**
+ * Main App component for React application
+ */
 function App() {
   const [loggedInUser] = useState(new User(1, UserType.DISPATCHER));
   const [selectedUserID, setSelectedUserID] = useState(

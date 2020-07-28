@@ -166,12 +166,6 @@ describe('TaskConflict', () => {
     fireEvent.click(getByText('Retry'));
     expect(stub).toHaveBeenCalledTimes(1);
   });
-  it('should provide a recommended rescheduled time for the conflicting task to be added/updated', () => {
-    throw new Error('Not implemented');
-  });
-  it('should trigger reschedule action when reschedule button is clicked', () => {
-    throw new Error('Not implemented');
-  });
   it('should say no more conflicting tasks if all tasks have been deleted', () => {
     const { getByText, queryByText } = render(
       <TaskConflict

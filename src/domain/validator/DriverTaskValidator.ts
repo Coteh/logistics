@@ -16,13 +16,24 @@ export interface DriverTaskValidationResult {
   conflictingTasks?: DriverTask[];
 }
 
+/**
+ * Validates driver tasks for valid input and no conflicts
+ */
 export default class DriverTaskValidator {
   private driverTaskRepo: DriverTaskRepository;
 
+  /**
+   * Constructs a driver task validator
+   * @param driverTaskRepo driver task repository
+   */
   constructor(driverTaskRepo: DriverTaskRepository) {
     this.driverTaskRepo = driverTaskRepo;
   }
 
+  /**
+   * Validate a driver task
+   * @param args driver task information to be used for validation
+   */
   public validateTaskEntry(args: DriverTaskArgs): DriverTaskValidationResult {
     let userTasks: DriverTask[] = this.driverTaskRepo.getWeeklyTasksByUserID({
       userID: args.userID,

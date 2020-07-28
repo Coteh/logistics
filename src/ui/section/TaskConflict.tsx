@@ -10,6 +10,11 @@ interface IProps {
   retryTask: Function;
 }
 
+/**
+ * Prompt that appears after adding/updating task that lists tasks that conflict with that task.
+ * User can delete the conflicting tasks and retry.
+ * @param props list of conflicting tasks, and functions for delete and retry
+ */
 export default function TaskConflict(props: IProps) {
   const { conflictingTasks, deleteTask, retryTask } = props;
 

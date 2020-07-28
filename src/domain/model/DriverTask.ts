@@ -1,6 +1,9 @@
 import { DriverTaskType } from '../type/DriverTaskType';
 import Model from './Model';
 
+/**
+ * Model that represents a task scheduled for a driver
+ */
 export default class DriverTask extends Model {
   public id: number;
   public type: DriverTaskType;

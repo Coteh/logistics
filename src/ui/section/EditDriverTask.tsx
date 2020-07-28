@@ -76,6 +76,10 @@ function populateDiscreteDayOptions() {
   );
 }
 
+/**
+ * Prompt for adding/updating driver task
+ * @param props label for dialog, user id, default values, and submit function
+ */
 export default function EditDriverTask(props: IProps) {
   const {
     label,

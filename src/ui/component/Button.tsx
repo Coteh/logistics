@@ -6,6 +6,10 @@ interface IProps {
   onClick?: Function;
 }
 
+/**
+ * Displays a button that user can press
+ * @param props label and colour of button, as well as onClick function (all optional)
+ */
 export default function Button(props: IProps) {
   const { label, onClick } = props;
 

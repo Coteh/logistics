@@ -7,6 +7,10 @@ interface IProps {
   noFunc: Function;
 }
 
+/**
+ * Confirmation dialog
+ * @param props label and yes/no callbacks
+ */
 export default function Confirm(props: IProps) {
   const { label, yesFunc, noFunc } = props;
 

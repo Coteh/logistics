@@ -1,10 +1,14 @@
 import React from 'react';
 
 interface IProps {
-  message?: string;
+  message: string;
   notificationIndex?: number;
 }
 
+/**
+ * Displays a notification on top of the page with supplied message
+ * @param props message and (optionally) notification index (used for positioning of notification on page)
+ */
 export default function Notification(props: IProps) {
   const { message, notificationIndex } = props;
 

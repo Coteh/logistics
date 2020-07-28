@@ -20,6 +20,7 @@ export class ConflictServiceError extends ServiceError {
    * @param message message of error
    * @param type type of error
    * @param conflictingTasks tasks that conflicted
+   * @see ServiceErrorType
    */
   constructor(
     message: string,

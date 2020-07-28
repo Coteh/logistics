@@ -5,7 +5,7 @@ import Notification from './Notification';
 
 describe('Notification', () => {
   it('displays without crash', () => {
-    render(<Notification />);
+    render(<Notification message="" />);
   });
   it('displays a message', () => {
     const { getByText } = render(<Notification message="Test Message" />);

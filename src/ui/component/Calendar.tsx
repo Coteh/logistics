@@ -10,6 +10,10 @@ interface IProps {
   tasks: DriverTask[];
 }
 
+/**
+ * Displays the calendar containing scheduled tasks
+ * @param props tasks to display on the calendar
+ */
 export default function Calendar(props: IProps) {
   const hoursArr: number[] = createHoursArr();
   const daysArr: string[] = [

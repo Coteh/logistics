@@ -6,6 +6,10 @@ interface IProps {
   rows?: string[];
 }
 
+/**
+ * Represents a column on the calendar
+ * @param props cell width and height, and optional rows
+ */
 export default function CalendarColumn(props: IProps) {
   const { cellWidth, cellHeight, rows } = props;
 

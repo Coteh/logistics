@@ -1,6 +1,15 @@
+/**
+ * Represents a general service error
+ */
 export default class ServiceError extends Error {
   public type: ServiceErrorType;
 
+  /**
+   * Constructs a service error
+   * @param message error message
+   * @param type type of service error
+   * @see ServiceErrorType
+   */
   constructor(message: string, type: ServiceErrorType) {
     super(message);
     this.type = type;

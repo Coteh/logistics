@@ -11,6 +11,10 @@ interface IProps {
   submitFunc: Function;
 }
 
+/**
+ * Prompt for generating and downloading spreadsheet report
+ * @param props user id, default interval, and submit function
+ */
 export default function DownloadToFile(props: IProps) {
   const { userID, defaultInterval, submitFunc } = props;
 

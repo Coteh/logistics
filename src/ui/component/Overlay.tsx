@@ -7,6 +7,10 @@ interface IProps {
   contextMenuItems?: JSX.Element[];
 }
 
+/**
+ * Overlay that holds a prompt and (optionally) some context menu items that would be displayed on top of the overlay
+ * @param props container component (ie. a prompt) and context menu item components
+ */
 export default function Overlay(props: IProps) {
   const { container, contextMenuItems } = props;
 

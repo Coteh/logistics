@@ -6,6 +6,10 @@ interface IProps {
   header?: string;
 }
 
+/**
+ * Represents a header of a calendar column
+ * @param props cell width and height, and optional header
+ */
 export default function CalendarHeader(props: IProps) {
   const { cellWidth, cellHeight, header } = props;
 
