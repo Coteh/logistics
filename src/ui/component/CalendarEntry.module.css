@@ -1,0 +1,11 @@
+.calendarEntry {
+  position: absolute;
+  background-color: #3174ad;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.calendarEntryText {
+  color: white;
+}

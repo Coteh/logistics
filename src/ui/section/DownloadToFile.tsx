@@ -68,7 +68,7 @@ export default function DownloadToFile(props: IProps) {
             </tr>
           </tbody>
         </table>
-        <Button onClick={onSubmit} label="Submit"></Button>
+        <Button onClick={onSubmit} label="Download as CSV"></Button>
       </form>
     </div>
   );

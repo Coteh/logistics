@@ -91,13 +91,13 @@ export default class DriverTaskService {
     );
     if (result.invalid) {
       throw new ServiceError(
-        'New task has invalid start and/or end time',
+        'Task has invalid start and/or end time',
         ServiceErrorType.INVALID_TIME_UNIT,
       );
     }
     if (result.conflict) {
       throw new ConflictServiceError(
-        'New task conflicts with one or more tasks',
+        'Task conflicts with one or more tasks',
         ServiceErrorType.TASK_CONFLICT,
         result.conflictingTasks ? result.conflictingTasks : [],
       );

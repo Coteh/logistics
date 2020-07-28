@@ -5,6 +5,7 @@ import { createHoursArr, hoursToTimeString } from '../../util/time_util';
 import CalendarColumn from './CalendarColumn';
 import CalendarHeader from './CalendarHeader';
 import { AppContext } from '../context/AppContext';
+import CalendarEntry from './CalendarEntry';
 
 interface IProps {
   tasks: DriverTask[];
@@ -100,25 +101,13 @@ export default function Calendar(props: IProps) {
                 .filter((task) => task.day === i + 1)
                 .map((task) => {
                   return (
-                    <div
-                      key={`task_${task.id}`}
-                      style={{
-                        position: 'absolute',
-                        backgroundColor: '#3174ad',
-                        borderRadius: '8px',
-                        top: cellHeight * (task.start - 1) + 'px',
-                        height: (task.end - task.start) * cellHeight + 'px',
-                        width: '100%',
-                      }}
-                      onClick={() => app.performTaskEdit(task)}
-                    >
-                      <span
-                        style={{
-                          color: 'white',
-                        }}
-                      >
-                        {driverTaskString(task.type)}
-                      </span>
+                    <div key={`task_${task.id}`}>
+                      <CalendarEntry
+                        label={driverTaskString(task.type)}
+                        startY={(cellHeight + 1) * (task.start - 1)}
+                        height={(task.end - task.start) * (cellHeight + 1)}
+                        onClick={() => app.performTaskEdit(task)}
+                      />
                     </div>
                   );
                 })}

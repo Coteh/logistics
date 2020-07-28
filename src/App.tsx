@@ -362,6 +362,14 @@ function App() {
           ))}
         </div>
       </AppContext.Provider>
+      <footer
+        style={{
+          fontSize: '12px',
+          padding: '10px',
+        }}
+      >
+        <span>&copy; 2020 James Cote</span>
+      </footer>
     </div>
   );
 }

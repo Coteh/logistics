@@ -27,7 +27,7 @@ describe('DownloadToFile', () => {
       },
     });
 
-    fireEvent.click(getByText('Submit'));
+    fireEvent.click(getByText('Download as CSV'));
 
     expect(stub).toHaveBeenCalledTimes(1);
   });
@@ -59,7 +59,7 @@ describe('DownloadToFile', () => {
       },
     });
 
-    fireEvent.click(getByText('Submit'));
+    fireEvent.click(getByText('Download as CSV'));
 
     expect(stub).toHaveBeenLastCalledWith(0, 28);
   });
@@ -88,7 +88,7 @@ describe('DownloadToFile', () => {
       },
     });
 
-    fireEvent.click(getByText('Submit'));
+    fireEvent.click(getByText('Download as CSV'));
 
     expect(submitStub).not.toHaveBeenCalled();
     expect(notificationStub).toHaveBeenCalled();
