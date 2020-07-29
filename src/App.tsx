@@ -275,7 +275,7 @@ function App() {
         }
       })()}
       <header className="App-header">
-        <img src={logo} className="App-logo"></img>
+        <img src={logo} className="App-logo" alt="logistics"></img>
         <h2
           style={{
             color: 'lightgrey',
