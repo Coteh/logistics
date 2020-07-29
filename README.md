@@ -67,7 +67,7 @@ I also added [prettier](https://prettier.io/) to my project and added a [husky](
 
 ## Limitations
 
-- No mobile-friendly layout
+- Calendar UI not mobile-friendly
   - The calendar is not mobile-friendly. The positioning of the calendar header will be flaky if the main page becomes scrollable.
   - Desktop usability was prioritized for this coding challenge. If I had more time, I would work on improving the mobile layout, especially for the calendar UI.
 - Can't schedule between 11:01 PM-12:00 AM
