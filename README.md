@@ -65,6 +65,10 @@ I developed the application using a TDD (test-driven development) approach. For 
 
 I also added [prettier](https://prettier.io/) to my project and added a [husky](https://github.com/typicode/husky) hook to the project which automatically formats code on every commit. I believe that this is an effective way of keeping code clean and consistent throughout the project.
 
+### Continuous Integration
+
+I have set up [CircleCI](https://circleci.com/) for the project to run tests on each push, [Codecov](https://codecov.io/) to provide code coverage metrics, and [Netlify](https://www.netlify.com/) to automatically build and deploy the web application. These tools improve my productivity and give me more confidence in my solution.
+
 ## Limitations
 
 - Calendar UI not mobile-friendly
