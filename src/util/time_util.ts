@@ -1,6 +1,7 @@
 /**
  * Convert discrete hour (1-24) into human-readable time string
  * @param hour discrete hour
+ * @returns human-readable time string (e.g. 08:00 AM)
  */
 export function hoursToTimeString(hour: number) {
   hour -= 1;
@@ -18,6 +19,7 @@ export function hoursToTimeString(hour: number) {
 
 /**
  * Generate array of discrete hours
+ * @returns array of discrete hours, from 1-24
  */
 export function createHoursArr(): number[] {
   return new Array(24).fill(0).map((_, index) => {
@@ -28,7 +30,8 @@ export function createHoursArr(): number[] {
 /**
  * Ensures the discrete week is clamped between 1 and 52
  * @param week discrete week
+ * @returns clamped discrete week
  */
-export function getClampedWeek(week: number) {
+export function getClampedWeek(week: number): number {
   return ((((week - 1) % 52) + 52) % 52) + 1;
 }

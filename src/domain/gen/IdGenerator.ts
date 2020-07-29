@@ -14,6 +14,7 @@ export default class IdGenerator {
 
   /**
    * Generate next id
+   * @returns generated id
    */
   public genID(): number {
     return ++this.currID;

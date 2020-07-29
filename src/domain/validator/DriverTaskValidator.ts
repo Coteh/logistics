@@ -10,6 +10,9 @@ interface DriverTaskArgs {
   ignoreIDs?: number[];
 }
 
+/**
+ * Represents the result of validation (ie. whether there's any errors with validation or if any conflicts occurred)
+ */
 export interface DriverTaskValidationResult {
   conflict: boolean;
   invalid: boolean;
@@ -33,6 +36,8 @@ export default class DriverTaskValidator {
   /**
    * Validate a driver task
    * @param args driver task information to be used for validation
+   * @remarks a future improvement to this validator would be to split this method into two, one for validation one for conflicts
+   * @returns result of driver task validation (ie. whether there's any validation errors or conflicts)
    */
   public validateTaskEntry(args: DriverTaskArgs): DriverTaskValidationResult {
     let userTasks: DriverTask[] = this.driverTaskRepo.getWeeklyTasksByUserID({

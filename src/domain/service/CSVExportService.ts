@@ -38,6 +38,7 @@ export default class CSVExportService {
    * @param userID id of user to export data for
    * @param dayInterval interval of exports, accepted intervals are 2, 4, 7, 14, and 28
    * @param user user that is exporting data
+   * @returns blob containing exported CSV data
    */
   public async exportToCSV(
     userID: number,

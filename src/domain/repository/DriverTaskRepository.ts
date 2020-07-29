@@ -21,6 +21,7 @@ export class DriverTaskRepository extends Repository<DriverTask> {
   /**
    * Gets weekly driver tasks for a given user
    * @param query driver task week query
+   * @returns array of driver tasks that belong to user for given week
    */
   public getWeeklyTasksByUserID(query: DriverTaskWeekQuery): DriverTask[] {
     return Array.from(this.storage.values()).filter((task) => {
@@ -36,6 +37,7 @@ export class DriverTaskRepository extends Repository<DriverTask> {
   /**
    * Gets driver tasks from a given day range for a specified user
    * @param query driver task interval query
+   * @returns array of driver tasks that belong to user between the given days
    */
   public getTaskIntervalByUserID(query: DriverTaskIntervalQuery): DriverTask[] {
     return Array.from(this.storage.values()).filter((task) => {

@@ -16,7 +16,7 @@ interface IProps {
 
 /**
  * Displays the calendar containing scheduled tasks
- * @param props tasks to display on the calendar
+ * @param props width and height of cells, tasks to display on the calendar, and optional scroll value for calendar body
  */
 export default function Calendar(props: IProps) {
   const hoursArr: number[] = createHoursArr();

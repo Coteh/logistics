@@ -14,6 +14,17 @@ export default class DriverTask extends Model {
   public userID: number;
   public location: string;
 
+  /**
+   * Constructs a Driver Task model
+   * @param id id of task
+   * @param type type of task (ie. Pickup, Deliver, Other)
+   * @param start start time in discrete units (1-24)
+   * @param end end time in discrete units (1-24)
+   * @param day day in discrete units (1-7)
+   * @param week week in discrete units (1-52)
+   * @param userID id of user this task belongs to
+   * @param location location of task
+   */
   constructor(
     id: number,
     type: DriverTaskType,

@@ -6,6 +6,7 @@ export class CSVCreator {
    * Creates a CSV blob given header and row data
    * @param headers headers for CSV file
    * @param rows rows for CSV file
+   * @returns CSV blob
    */
   public createCSVBlob(headers: string[], rows: any[][]): Blob {
     return new Blob(

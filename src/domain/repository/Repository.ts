@@ -16,6 +16,7 @@ export default class Repository<T extends Model> {
   /**
    * Gets an entry from repository
    * @param key identifier of data
+   * @returns repository entry
    */
   public get(key: number): T {
     if (!this.storage.has(key)) {
@@ -29,7 +30,7 @@ export default class Repository<T extends Model> {
    * @param key identifier of data
    * @param item item to add
    */
-  public add(key: number, item: T) {
+  public add(key: number, item: T): void {
     this.storage.set(key, item);
   }
 
@@ -37,7 +38,7 @@ export default class Repository<T extends Model> {
    * Deletes an entry from repository
    * @param key identifier of data
    */
-  public delete(key: number) {
+  public delete(key: number): void {
     if (!this.storage.has(key)) {
       throw new Error(`Item with key ${key} not found`);
     }

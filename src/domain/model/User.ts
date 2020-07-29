@@ -9,6 +9,12 @@ export default class User extends Model {
   public type: UserType;
   public name: string;
 
+  /**
+   * Constructs a User model
+   * @param id user id
+   * @param type type of user (ie. Dispatcher or Driver)
+   * @param name name of user (optional)
+   */
   constructor(id: number, type: UserType, name?: string) {
     super();
     this.id = id;

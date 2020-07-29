@@ -21,6 +21,7 @@ export default class DriverTaskFactory
   /**
    * Create a new {@link DriverTask} instance
    * @param args information for a new driver task
+   * @returns newly created driver task instance
    */
   public create(args: DriverTaskInput): DriverTask {
     return new DriverTask(

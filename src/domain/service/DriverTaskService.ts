@@ -108,6 +108,7 @@ export default class DriverTaskService {
    * Adds a new task
    * @param args input for new driver task
    * @param user user performing action
+   * @returns newly added driver task
    */
   public async addTask(args: DriverTaskInput, user: User): Promise<DriverTask> {
     // Ensure user has role to update task
@@ -126,6 +127,7 @@ export default class DriverTaskService {
    * @param id id of driver task to update
    * @param args input for updated driver task
    * @param user user performing action
+   * @returns updated driver task
    */
   public async updateTask(
     id: number,
@@ -181,6 +183,7 @@ export default class DriverTaskService {
    * @param userID id of user to collect tasks for
    * @param week week to collect tasks for
    * @param user user performing action
+   * @returns array of driver's task for the week
    */
   public async getWeeklyUserTasks(
     userID: number,
