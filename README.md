@@ -5,7 +5,7 @@
 
 A React application that tracks driver activities. This is an application written for a [Rose Rocket](https://www.roserocket.com/) coding challenge.
 
-**[Click here to view a live deployment](https://quirky-poincare-d4268e.netlify.app/)**
+**[Click here to view a live deployment](https://logisticsapp.netlify.app/)**
 
 ![Screenshot](screenshot.png 'Preview Screenshot')
 
