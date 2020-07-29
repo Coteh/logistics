@@ -25,6 +25,7 @@ import { AppContext } from './ui/context/AppContext';
 import CSVExportService from './domain/service/CSVExportService';
 import { CSVCreator } from './domain/csv/CSVCreator';
 import DownloadToFile from './ui/section/DownloadToFile';
+import logo from './img/truck.svg';
 
 const driverTaskRepo: DriverTaskRepository = new DriverTaskRepository();
 const driverTaskService: DriverTaskService = new DriverTaskService(
@@ -274,6 +275,7 @@ function App() {
         }
       })()}
       <header className="App-header">
+        <img src={logo} className="App-logo"></img>
         <h2
           style={{
             color: 'lightgrey',
