@@ -20,6 +20,7 @@ export type StubbedClass<T> = SinonStubbedInstance<T> & T;
  * Original author of this piece is pauloavelar on GitHub (https://github.com/sinonjs/sinon/issues/1963#issuecomment-497349920)
  * @param constructor constructor of class to stub
  * @param overrides
+ * @returns stubbed instance
  */
 export function createSinonStubInstance<T>(
   constructor: StubbableType<T>,
