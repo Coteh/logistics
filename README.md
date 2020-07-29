@@ -68,7 +68,7 @@ I also added [prettier](https://prettier.io/) to my project and added a [husky](
 ## Limitations
 
 - No mobile-friendly layout
-  - The calendar is unfortunately not mobile-friendly. If the screen is too narrow, the header columns will be cut off.
+  - The calendar is not mobile-friendly. The positioning of the calendar header will be flaky if the main page becomes scrollable.
   - Desktop usability was prioritized for this coding challenge. If I had more time, I would work on improving the mobile layout, especially for the calendar UI.
 - Can't schedule between 11:01 PM-12:00 AM
   - The original requirements stated that tasks should not occur across multiple days, and I kept this in mind when I was developing the task scheduling feature. I realized too late that my discrete time system does not account for tasks ending at 12am but not necessarily being a part of the following day. If I had more time, I would update the discrete time system to account for this time period.

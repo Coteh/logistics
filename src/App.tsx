@@ -353,7 +353,7 @@ function App() {
           cellWidth={cellWidth}
           cellHeight={cellHeight}
           tasks={tasks}
-          scrollTo={calendarScroll}
+          scrollTop={calendarScroll}
         />
         <div
           style={{

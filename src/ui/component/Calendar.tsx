@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { driverTaskString } from '../../domain/type/DriverTaskType';
 import DriverTask from '../../domain/model/DriverTask';
 import { createHoursArr, hoursToTimeString } from '../../util/time_util';
@@ -11,7 +11,7 @@ interface IProps {
   cellWidth: number;
   cellHeight: number;
   tasks: DriverTask[];
-  scrollTo?: number;
+  scrollTop?: number;
 }
 
 /**
@@ -32,25 +32,41 @@ export default function Calendar(props: IProps) {
 
   const padding = 8;
 
-  const { cellWidth, cellHeight, tasks, scrollTo } = props;
+  const { cellWidth, cellHeight, tasks, scrollTop } = props;
+  const [scrollLeft, setScrollLeft] = useState(0);
   const calendarRef = useRef(null);
 
   const app = useContext(AppContext);
 
   useEffect(() => {
     if (calendarRef.current) {
-      (calendarRef.current! as HTMLElement).scrollTop = scrollTo || 0;
+      (calendarRef.current! as HTMLElement).scrollTop = scrollTop || 0;
     }
-  }, [scrollTo]);
+  }, [scrollTop]);
+
+  const onScroll = (e: React.UIEvent<HTMLElement>) => {
+    e.stopPropagation();
+    setScrollLeft(e.currentTarget.scrollLeft);
+  };
 
   return (
-    <>
+    <div
+      ref={calendarRef}
+      style={{
+        height: '500px',
+        overflowY: 'scroll',
+      }}
+      onScroll={onScroll}
+    >
       <div
         style={{
-          maxWidth: '100vw',
           padding: padding + 'px',
           display: 'flex',
           border: '1px solid black',
+          position: 'fixed',
+          zIndex: 10,
+          backgroundColor: '#f2fdff',
+          left: -scrollLeft + 'px',
         }}
       >
         <CalendarHeader cellWidth={cellWidth} cellHeight={cellHeight} />
@@ -70,14 +86,10 @@ export default function Calendar(props: IProps) {
         ))}
       </div>
       <div
-        ref={calendarRef}
         style={{
-          maxWidth: '100vw',
           padding: padding + 'px',
           display: 'flex',
-          height: '500px',
-          overflowY: 'scroll',
-          border: '1px solid black',
+          marginTop: cellHeight + 20 + 'px',
         }}
       >
         <CalendarColumn
@@ -123,6 +135,6 @@ export default function Calendar(props: IProps) {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
