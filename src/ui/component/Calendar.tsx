@@ -50,20 +50,12 @@ export default function Calendar(props: IProps) {
   };
 
   return (
-    <div
-      ref={calendarRef}
-      style={{
-        height: '500px',
-        overflowY: 'scroll',
-      }}
-      onScroll={onScroll}
-    >
+    <div>
       <div
         style={{
           padding: padding + 'px',
           display: 'flex',
-          border: '1px solid black',
-          position: 'fixed',
+          position: 'relative',
           zIndex: 10,
           backgroundColor: '#f2fdff',
           left: -scrollLeft + 'px',
@@ -89,8 +81,11 @@ export default function Calendar(props: IProps) {
         style={{
           padding: padding + 'px',
           display: 'flex',
-          marginTop: cellHeight + 20 + 'px',
+          height: '500px',
+          overflowY: 'scroll',
         }}
+        ref={calendarRef}
+        onScroll={onScroll}
       >
         <CalendarColumn
           cellWidth={cellWidth}
