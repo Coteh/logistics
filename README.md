@@ -76,3 +76,11 @@ I have set up [CircleCI](https://circleci.com/) for the project to run tests on 
   - Desktop usability was prioritized for this coding challenge. If I had more time, I would work on improving the mobile layout, especially for the calendar UI.
 - Can't schedule between 11:01 PM-12:00 AM
   - The original requirements stated that tasks should not occur across multiple days, and I kept this in mind when I was developing the task scheduling feature. I realized too late that my discrete time system does not account for tasks ending at 12am but not necessarily being a part of the following day. If I had more time, I would update the discrete time system to account for this time period.
+
+## Future Improvements
+
+- Adjust spacing and positioning of UI elements to be more user-friendly
+- Refactor test code to make it more reusable
+- Add colour to notification component based on success/error
+- Fix 11:01 PM-12:00 AM scheduling issue
+- Check out [this section](https://github.com/Coteh/logistics/projects/2) for more
