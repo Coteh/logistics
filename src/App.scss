@@ -1,24 +1,20 @@
 .App {
   text-align: center;
-}
 
-.App-logo {
-  height: 4vh;
-  pointer-events: none;
-  vertical-align: middle;
-  margin: auto 0;
-  margin-right: 16px;
-}
+  .App-header {
+    background-color: #282c34;
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    color: white;
+    padding-left: 20px;
 
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  align-items: flex-start;
-  justify-content: left;
-  color: white;
-  padding-left: 20px;
-}
-
-.App-link {
-  color: #61dafb;
+    .App-logo {
+      height: 4vh;
+      pointer-events: none;
+      vertical-align: middle;
+      margin: auto 0;
+      margin-right: 16px;
+    }
+  }
 }
