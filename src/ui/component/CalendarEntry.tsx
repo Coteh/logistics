@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './CalendarEntry.module.css';
+import styles from './CalendarEntry.module.scss';
 
 interface IProps {
   label: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Notification.module.css';
+import styles from './Notification.module.scss';
 
 interface IProps {
   message: string;
