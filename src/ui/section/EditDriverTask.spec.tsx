@@ -183,6 +183,7 @@ describe('EditDriverTask', () => {
       week: 1,
       location: 'New York',
       userID: 0,
+      description: 'Default description',
     };
 
     expect(submitStub).toHaveBeenLastCalledWith(expectedArgs);

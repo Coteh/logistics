@@ -18,6 +18,7 @@ interface IProps {
   defaultLocation?: string;
   defaultDay?: number;
   defaultWeek?: number;
+  defaultDescription?: string;
   submitFunc: Function;
 }
 
@@ -91,6 +92,7 @@ export default function EditDriverTask(props: IProps) {
     defaultDay,
     defaultWeek,
     submitFunc,
+    defaultDescription,
   } = props;
 
   const [taskType, setTaskType] = useState(defaultType || DriverTaskType.NONE);
@@ -99,6 +101,9 @@ export default function EditDriverTask(props: IProps) {
   const [location, setLocation] = useState(defaultLocation || 'Toronto');
   const [day, setDay] = useState(defaultDay || 1);
   const [week, setWeek] = useState(defaultWeek || 1);
+  const [description, setDescription] = useState(
+    defaultDescription || 'Default description',
+  );
 
   const app = useContext(AppContext);
 
@@ -139,6 +144,7 @@ export default function EditDriverTask(props: IProps) {
       week,
       userID,
       location,
+      description,
     };
     submitFunc(args);
   }
@@ -261,6 +267,20 @@ export default function EditDriverTask(props: IProps) {
                   data-testid="location"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                ></input>
+                <br />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Description</label>
+              </td>
+              <td>
+                <input
+                  name="description"
+                  data-testid="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 ></input>
                 <br />
               </td>

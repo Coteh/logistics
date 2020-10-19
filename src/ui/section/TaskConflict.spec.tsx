@@ -27,6 +27,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           {
             id: 2,
@@ -37,6 +38,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ]}
         deleteTask={() => {}}
@@ -64,6 +66,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           {
             id: 2,
@@ -74,6 +77,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ]}
         deleteTask={() => {}}
@@ -101,6 +105,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           {
             id: 2,
@@ -111,6 +116,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ]}
         deleteTask={stub}
@@ -146,6 +152,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           {
             id: 2,
@@ -156,6 +163,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ]}
         deleteTask={() => {}}
@@ -179,6 +187,7 @@ describe('TaskConflict', () => {
             week: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ]}
         deleteTask={() => {}}
