@@ -27,6 +27,7 @@ describe('CSVExportService', () => {
       week: 1,
       location: 'Toronto',
       userID: 1,
+      description: 'Some description',
     });
     driverTaskRepo.add(2, {
       id: 2,
@@ -37,6 +38,7 @@ describe('CSVExportService', () => {
       week: 1,
       location: 'Toronto',
       userID: 1,
+      description: 'Some description',
     });
     driverTaskRepo.add(3, {
       id: 3,
@@ -47,6 +49,7 @@ describe('CSVExportService', () => {
       week: 1,
       location: 'Toronto',
       userID: 1,
+      description: 'Some description',
     });
     driverTaskRepo.add(4, {
       id: 4,
@@ -57,6 +60,7 @@ describe('CSVExportService', () => {
       week: 1,
       location: 'Toronto',
       userID: 1,
+      description: 'Some description',
     });
     driverTaskRepo.add(5, {
       id: 5,
@@ -67,6 +71,7 @@ describe('CSVExportService', () => {
       week: 1,
       location: 'Toronto',
       userID: 1,
+      description: 'Some description',
     });
     driverTaskRepo.add(6, {
       id: 6,
@@ -77,6 +82,7 @@ describe('CSVExportService', () => {
       week: 1,
       location: 'Toronto',
       userID: 1,
+      description: 'Some description',
     });
     driverTaskRepo.add(7, {
       id: 7,
@@ -87,6 +93,7 @@ describe('CSVExportService', () => {
       week: 5,
       location: 'Toronto',
       userID: 1,
+      description: 'Some description',
     });
   }
 

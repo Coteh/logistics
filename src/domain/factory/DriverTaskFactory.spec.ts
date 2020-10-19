@@ -29,6 +29,7 @@ describe('DriverTaskFactory', () => {
       week: 2,
       userID: 1,
       location: 'Toronto',
+      description: 'Some description',
     };
 
     let driverTask: DriverTask = factory.create(taskInput);

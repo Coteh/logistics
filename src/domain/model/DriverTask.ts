@@ -13,6 +13,7 @@ export default class DriverTask extends Model {
   public week: number;
   public userID: number;
   public location: string;
+  public description: string;
 
   /**
    * Constructs a Driver Task model
@@ -34,6 +35,7 @@ export default class DriverTask extends Model {
     week: number,
     userID: number,
     location: string,
+    description: string,
   ) {
     super();
     this.id = id;
@@ -44,5 +46,6 @@ export default class DriverTask extends Model {
     this.week = week;
     this.userID = userID;
     this.location = location;
+    this.description = description;
   }
 }
