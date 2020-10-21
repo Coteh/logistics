@@ -91,8 +91,8 @@ export default function EditDriverTask(props: IProps) {
     defaultLocation,
     defaultDay,
     defaultWeek,
-    submitFunc,
     defaultDescription,
+    submitFunc,
   } = props;
 
   const [taskType, setTaskType] = useState(defaultType || DriverTaskType.NONE);
