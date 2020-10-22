@@ -137,6 +137,7 @@ function App() {
         defaultLocation={driverTask.location}
         defaultDay={driverTask.day}
         defaultWeek={driverTask.week}
+        defaultDescription={driverTask.description}
         label="Edit Task"
         submitFunc={(args: DriverTaskInput) => updateTask(driverTask.id, args)}
       />,
