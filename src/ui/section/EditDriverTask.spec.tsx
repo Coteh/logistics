@@ -141,6 +141,7 @@ describe('EditDriverTask', () => {
     );
 
     expect(submitStub).not.toHaveBeenCalled();
+    const newDescription = 'New description';
 
     fireEvent.change(getByTestId('task-type'), {
       target: {
@@ -172,6 +173,11 @@ describe('EditDriverTask', () => {
         value: 'New York',
       },
     });
+    fireEvent.change(getByTestId('description'), {
+      target: {
+        value: newDescription,
+      },
+    });
 
     fireEvent.click(getByText('Submit'));
 
@@ -183,6 +189,7 @@ describe('EditDriverTask', () => {
       week: 1,
       location: 'New York',
       userID: 0,
+      description: newDescription,
     };
 
     expect(submitStub).toHaveBeenLastCalledWith(expectedArgs);

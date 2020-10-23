@@ -33,6 +33,7 @@ export default class DriverTaskFactory
       args.week,
       args.userID,
       args.location,
+      args.description,
     );
   }
 }

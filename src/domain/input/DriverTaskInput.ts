@@ -12,4 +12,5 @@ export interface DriverTaskInput {
   week: number;
   userID: number;
   location: string;
+  description: string;
 }

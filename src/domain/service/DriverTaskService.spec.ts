@@ -37,6 +37,7 @@ describe('DriverTaskService', () => {
         day: 1,
         location: 'Toronto',
         userID: 1,
+        description: 'Some description',
       });
       mockValidator.validateTaskEntry.returns({
         conflict: false,
@@ -58,6 +59,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -80,6 +82,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ],
       });
@@ -94,6 +97,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -118,6 +122,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ],
       });
@@ -132,6 +137,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -149,6 +155,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           });
         });
     });
@@ -168,6 +175,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -189,6 +197,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DRIVER),
         )
@@ -209,7 +218,9 @@ describe('DriverTaskService', () => {
         day: 1,
         location: 'Toronto',
         userID: 1,
+        description: 'Some description',
       });
+
       mockValidator.validateTaskEntry.returns({
         conflict: false,
         invalid: false,
@@ -225,6 +236,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -238,6 +250,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           });
         });
     });
@@ -253,6 +266,7 @@ describe('DriverTaskService', () => {
         day: 1,
         location: 'Toronto',
         userID: 1,
+        description: 'Some description',
       });
       mockValidator.validateTaskEntry.returns({
         conflict: false,
@@ -280,6 +294,7 @@ describe('DriverTaskService', () => {
             day: 2,
             location: 'Guelph',
             userID: 2,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -310,6 +325,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ],
       });
@@ -325,6 +341,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -349,6 +366,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
         ],
       });
@@ -364,6 +382,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -381,6 +400,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           });
         });
     });
@@ -401,6 +421,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -423,6 +444,7 @@ describe('DriverTaskService', () => {
             day: 2,
             location: 'Guelph',
             userID: 2,
+            description: 'Some description',
           },
           new User(1, UserType.DRIVER),
         )
@@ -450,6 +472,7 @@ describe('DriverTaskService', () => {
             day: 2,
             location: 'Guelph',
             userID: 2,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         ),
@@ -472,6 +495,7 @@ describe('DriverTaskService', () => {
             day: 2,
             location: 'Guelph',
             userID: 2,
+            description: 'Some description',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -494,6 +518,7 @@ describe('DriverTaskService', () => {
         day: 1,
         location: 'Toronto',
         userID: 1,
+        description: 'Some description',
       });
 
       return service.deleteTask(1, new User(1, UserType.DISPATCHER));
@@ -508,6 +533,7 @@ describe('DriverTaskService', () => {
         day: 1,
         location: 'Toronto',
         userID: 1,
+        description: 'Some description',
       });
 
       return service
@@ -546,6 +572,7 @@ describe('DriverTaskService', () => {
         day: 1,
         location: 'Toronto',
         userID: 1,
+        description: 'Some description',
       });
       repo.add(2, {
         id: 2,
@@ -556,6 +583,7 @@ describe('DriverTaskService', () => {
         day: 1,
         location: 'Toronto',
         userID: 1,
+        description: 'Some description',
       });
 
       return service
@@ -571,6 +599,7 @@ describe('DriverTaskService', () => {
             day: 1,
             location: 'Toronto',
             userID: 1,
+            description: 'Some description',
           });
         });
     });
