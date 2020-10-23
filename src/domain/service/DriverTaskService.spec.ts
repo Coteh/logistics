@@ -282,6 +282,7 @@ describe('DriverTaskService', () => {
       expect(task.day).toEqual(1);
       expect(task.location).toEqual('Toronto');
       expect(task.userID).toEqual(1);
+      expect(task.description).toEqual('Some description');
 
       return service
         .updateTask(
@@ -294,7 +295,7 @@ describe('DriverTaskService', () => {
             day: 2,
             location: 'Guelph',
             userID: 2,
-            description: 'Some description',
+            description: 'Something else',
           },
           new User(1, UserType.DISPATCHER),
         )
@@ -306,6 +307,7 @@ describe('DriverTaskService', () => {
           expect(task.day).toEqual(2);
           expect(task.location).toEqual('Guelph');
           expect(task.userID).toEqual(2);
+          expect(task.description).toEqual('Something else');
           // As another confidence check: The record returned should match the record retrieved directly from repo
           let repoTask: DriverTask = repo.get(1);
           expect(repoTask).toEqual(task);

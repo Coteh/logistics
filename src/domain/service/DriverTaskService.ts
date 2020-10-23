@@ -155,6 +155,7 @@ export default class DriverTaskService {
     driverTask.week = args.week;
     driverTask.userID = args.userID;
     driverTask.location = args.location;
+    driverTask.description = args.description;
     // Return updated task to client
     return driverTask;
   }
